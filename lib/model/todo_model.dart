@@ -1,10 +1,12 @@
+import 'package:uuid/uuid.dart';
+
 class Todo {
-  int? id;
+  String? id;
   String? text;
   int? date;
   bool? done;
-  DateTime? createdAt;
-  DateTime? updatedAt;
+  int? createdAt;
+  int? updatedAt;
 
   Todo({
     this.id,
@@ -15,11 +17,25 @@ class Todo {
     this.updatedAt,
   });
 
+  Todo.newTodo() {
+    text = "";
+    date = DateTime.now().millisecondsSinceEpoch;
+    done = false;
+    createdAt = DateTime.now().millisecondsSinceEpoch;
+    updatedAt = DateTime.now().millisecondsSinceEpoch;
+  }
+
+  assignUUID() {
+    id = const Uuid().v4();
+  }
+
   Map<String, dynamic> toMap() => {
         'id': id,
         'text': text,
         'date': date,
         'done': done == true ? 1 : 0,
+        'created_at': createdAt,
+        'updated_at': updatedAt,
       };
 
   Todo.fromMap(Map<dynamic, dynamic> map) {
