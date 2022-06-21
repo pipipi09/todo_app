@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:todo_app/model/todo_model.dart';
+import '../model/todo_model.dart';
 
 class DbProvider {
   DbProvider._();
@@ -20,14 +20,16 @@ class DbProvider {
   }
 
   Future<void> _createTable(Database db, int version) async {
-    return await db.execute("CREATE TABLE todos("
-        "id TEXT PRIMARY KEY,"
-        "text TEXT NOT NULL,"
-        "date INTEGER NOT NULL,"
-        "done NUMERIC NOT NULL,"
-        "created_at INTEGER NOT NULL,"
-        "updated_at INTEGER NOT NULL"
-        ")");
+    return await db.execute(
+      "CREATE TABLE todos("
+      "id TEXT PRIMARY KEY,"
+      "text TEXT NOT NULL,"
+      "date INTEGER NOT NULL,"
+      "done NUMERIC NOT NULL,"
+      "created_at INTEGER NOT NULL,"
+      "updated_at INTEGER NOT NULL"
+      ")",
+    );
   }
 
   static const _tableName = "todos";
@@ -48,8 +50,12 @@ class DbProvider {
 
   updateTodo(Todo todo) async {
     final db = await database;
-    var res = await db.update(_tableName, todo.toMap(),
-        where: "id = ?", whereArgs: [todo.id]);
+    var res = await db.update(
+      _tableName,
+      todo.toMap(),
+      where: "id = ?",
+      whereArgs: [todo.id],
+    );
     return res;
   }
 

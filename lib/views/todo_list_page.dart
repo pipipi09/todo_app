@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:todo_app/view_model/count_view_model.dart';
+import '../view_model/count_view_model.dart';
 // import 'package:todo_app/db/db_provider.dart';
 // import 'package:todo_app/db/repository/todo_repository.dart';
 // import 'package:todo_app/model/todo_model.dart';
