@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -40,11 +41,10 @@ class DbProvider {
     return res;
   }
 
-  getAllTodos() async {
+  Future<List<Todo>> getAllTodos() async {
     final db = await database;
     var res = await db.query(_tableName);
-    List<Todo> list =
-        res.isNotEmpty ? res.map((c) => Todo.fromMap(c)).toList() : [];
+    final List<Todo> list = res.map((c) => Todo.fromMap(c)).toList();
     return list;
   }
 

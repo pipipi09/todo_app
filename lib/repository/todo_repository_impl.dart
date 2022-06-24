@@ -1,24 +1,21 @@
-import 'dart:math';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../db/db_provider.dart';
+import '../model/todo_model.dart';
 import '../model/result/result.dart';
 import 'todo_repository.dart';
 
 final todoRepositoryProvider =
-    Provider<TodoRepository>((ref) => TodoRepositoryImpl(ref.read));
+    Provider<TodoRepository>((ref) => TodoRepositoryImpl());
 
 class TodoRepositoryImpl implements TodoRepository {
-  TodoRepositoryImpl(this._reader);
-  // ignore: unused_field
-  final Reader _reader;
+  TodoRepositoryImpl();
 
   @override
-  Future<Result<int>> fetch() async {
+  Future<Result<List<Todo>>> fetch() async {
     return Result.guardFuture(() async {
-      await Future.delayed(const Duration(seconds: 2));
-      final rand = Random();
-      return rand.nextInt(100);
+      final result = await DbProvider.db.getAllTodos();
+      return result;
     });
   }
 }
