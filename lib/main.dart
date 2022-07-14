@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'views/todo_list_page.dart';
+import 'views/todo_list/todo_list_page.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));

@@ -23,7 +23,8 @@ class CountViewModel extends StateNotifier<AsyncValue<CountState>> {
     final result = await todoRepository.fetch();
     result.when(
       success: (data) {
-        state = AsyncValue.data(CountState(count: data));
+        // state = AsyncValue.data(CountState(count: data));
+        state = const AsyncValue.data(CountState(count: 1));
       },
       failure: (error) {
         state = AsyncValue.error(error);

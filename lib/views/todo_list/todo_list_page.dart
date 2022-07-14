@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../view_model/count_view_model.dart';
+import '../../model/dummy_todos.dart';
+// import '../../view_model/count_view_model.dart';
+import '../sections/app_bar_section.dart';
 // import 'package:todo_app/db/db_provider.dart';
 // import 'package:todo_app/db/repository/todo_repository.dart';
 // import 'package:todo_app/model/todo_model.dart';
@@ -12,38 +14,54 @@ class TodoListPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(countViewModelProvider);
-    final viewModel = ref.watch(countViewModelProvider.notifier);
+    // final state = ref.watch(countViewModelProvider);
+    // final viewModel = ref.watch(countViewModelProvider.notifier);
 
-    return state.when(
-      data: (data) {
-        return Scaffold(
-          body: SafeArea(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: viewModel.increment,
-                    child: Text(data.count.toString()),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-      error: (e, msg) => Text(e.toString()),
-      loading: () {
-        return const Scaffold(
-          body: SafeArea(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        );
-      },
+    return Scaffold(
+      appBar: const AppBarSection(),
+      body: SafeArea(
+        child: ListView.builder(
+          itemCount: dummyTodos.length,
+          itemBuilder: (context, index) {
+            final todo = dummyTodos[index];
+            return ListTile(
+              leading: const Icon(Icons.circle_outlined),
+              title: Text(todo.text ?? ''),
+            );
+          },
+        ),
+      ),
     );
+    // return state.when(
+    //   data: (data) {
+    //     return Scaffold(
+    //       appBar: const AppBarSection(),
+    //       body: SafeArea(
+    //         child: Center(
+    //           child: Column(
+    //             mainAxisAlignment: MainAxisAlignment.center,
+    //             children: [
+    //               ElevatedButton(
+    //                 onPressed: viewModel.increment,
+    //                 child: Text(data.count.toString()),
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //       ),
+    //     );
+    //   },
+    //   error: (e, msg) => Text(e.toString()),
+    //   loading: () {
+    //     return const Scaffold(
+    //       body: SafeArea(
+    //         child: Center(
+    //           child: CircularProgressIndicator(),
+    //         ),
+    //       ),
+    //     );
+    //   },
+    // );
     // return Scaffold(
     //   appBar: AppBar(
     //     title: const Text(
