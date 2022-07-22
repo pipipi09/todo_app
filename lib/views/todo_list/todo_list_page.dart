@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../model/dummy_todos.dart';
 // import '../../view_model/count_view_model.dart';
-import '../sections/app_bar_section.dart';
+import '../organisms/app_bar_organism.dart';
+import 'organisms/input_todo_organism.dart';
+import 'organisms/todo_list_organism.dart';
 // import 'package:todo_app/db/db_provider.dart';
 // import 'package:todo_app/db/repository/todo_repository.dart';
 // import 'package:todo_app/model/todo_model.dart';
@@ -19,16 +20,23 @@ class TodoListPage extends HookConsumerWidget {
 
     return Scaffold(
       appBar: const AppBarSection(),
-      body: SafeArea(
-        child: ListView.builder(
-          itemCount: dummyTodos.length,
-          itemBuilder: (context, index) {
-            final todo = dummyTodos[index];
-            return ListTile(
-              leading: const Icon(Icons.circle_outlined),
-              title: Text(todo.text ?? ''),
-            );
-          },
+      body: const SafeArea(
+        child: TodoListOrganism(),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            backgroundColor: Colors.transparent,
+            isScrollControlled: true,
+            context: context,
+            builder: (BuildContext context) {
+              return const InputTodoOrganism();
+            },
+          );
+        },
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
         ),
       ),
     );
