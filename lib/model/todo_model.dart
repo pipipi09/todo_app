@@ -1,6 +1,6 @@
 import 'package:uuid/uuid.dart';
 
-class Todo {
+class TodoModel {
   String? id;
   String? text;
   int? date;
@@ -8,7 +8,7 @@ class Todo {
   int? createdAt;
   int? updatedAt;
 
-  Todo({
+  TodoModel({
     this.id,
     this.text,
     this.date,
@@ -17,7 +17,7 @@ class Todo {
     this.updatedAt,
   });
 
-  Todo.newTodo() {
+  TodoModel.newTodo() {
     text = "";
     date = DateTime.now().millisecondsSinceEpoch;
     done = false;
@@ -38,7 +38,7 @@ class Todo {
         'updated_at': updatedAt,
       };
 
-  Todo.fromMap(Map<dynamic, dynamic> map) {
+  TodoModel.fromMap(Map<dynamic, dynamic> map) {
     id = map['id'];
     text = map['text'];
     date = map['date'];

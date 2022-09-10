@@ -10,13 +10,13 @@ final countViewModelProvider =
 );
 
 class CountViewModel extends StateNotifier<AsyncValue<CountState>> {
-  final AutoDisposeStateNotifierProviderRef _ref;
   CountViewModel({required AutoDisposeStateNotifierProviderRef ref})
       : _ref = ref,
         super(const AsyncLoading()) {
     load();
   }
 
+  final AutoDisposeStateNotifierProviderRef _ref;
   late final TodoRepository todoRepository = _ref.read(todoRepositoryProvider);
 
   Future<void> load() async {

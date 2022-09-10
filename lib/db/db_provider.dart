@@ -35,20 +35,20 @@ class DbProvider {
 
   static const _tableName = "todos";
 
-  createTodo(Todo todo) async {
+  createTodo(TodoModel todo) async {
     final db = await database;
     var res = await db.insert(_tableName, todo.toMap());
     return res;
   }
 
-  Future<List<Todo>> getAllTodos() async {
+  Future<List<TodoModel>> getAllTodos() async {
     final db = await database;
     var res = await db.query(_tableName);
-    final List<Todo> list = res.map((c) => Todo.fromMap(c)).toList();
+    final List<TodoModel> list = res.map((c) => TodoModel.fromMap(c)).toList();
     return list;
   }
 
-  updateTodo(Todo todo) async {
+  updateTodo(TodoModel todo) async {
     final db = await database;
     var res = await db.update(
       _tableName,

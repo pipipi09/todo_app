@@ -12,7 +12,7 @@ class TodoRepositoryImpl implements TodoRepository {
   TodoRepositoryImpl();
 
   @override
-  Future<Result<List<Todo>>> fetch() async {
+  Future<Result<List<TodoModel>>> fetch() async {
     return Result.guardFuture(() async {
       final result = await DbProvider.db.getAllTodos();
       return result;
