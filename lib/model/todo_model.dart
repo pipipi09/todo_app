@@ -1,47 +1,34 @@
-import 'package:uuid/uuid.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class TodoModel {
-  String? id;
-  String? text;
-  int? date;
-  bool? done;
-  int? createdAt;
-  int? updatedAt;
+part 'todo_model.freezed.dart';
+part 'todo_model.g.dart';
 
-  TodoModel({
-    this.id,
-    this.text,
-    this.date,
-    this.done,
-    this.createdAt,
-    this.updatedAt,
-  });
+@freezed
+class TodoModel with _$TodoModel {
+  const factory TodoModel({
+    /// id
+    String? id,
 
-  TodoModel.newTodo() {
-    text = "";
-    date = DateTime.now().millisecondsSinceEpoch;
-    done = false;
-    createdAt = DateTime.now().millisecondsSinceEpoch;
-    updatedAt = DateTime.now().millisecondsSinceEpoch;
-  }
+    /// Todoの内容
+    String? text,
 
-  assignUUID() {
-    id = const Uuid().v4();
-  }
+    /// Todoを行う日付
+    int? date,
 
-  Map<String, dynamic> toMap() => {
-        'id': id,
-        'text': text,
-        'date': date,
-        'done': done == true ? 1 : 0,
-        'created_at': createdAt,
-        'updated_at': updatedAt,
-      };
+    /// 完了したかどうか
+    int? done,
 
-  TodoModel.fromMap(Map<dynamic, dynamic> map) {
-    id = map['id'];
-    text = map['text'];
-    date = map['date'];
-    done = map['done'] == 1;
-  }
+    /// 作成日
+    int? createdAt,
+
+    /// 更新日
+    int? updatedAt,
+  }) = _TodoModel;
+
+  const TodoModel._();
+
+  /// JsonからTodoModelを生成する
+  @override
+  factory TodoModel.fromJson(Map<String, dynamic> json) =>
+      _$TodoModelFromJson(json);
 }

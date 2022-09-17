@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../db/db_provider.dart';
+import '../db/db_controller.dart';
 import '../model/todo_model.dart';
 import '../model/result/result.dart';
 import 'todo_repository.dart';
@@ -14,7 +14,7 @@ class TodoRepositoryImpl implements TodoRepository {
   @override
   Future<Result<List<TodoModel>>> fetch() async {
     return Result.guardFuture(() async {
-      final result = await DbProvider.db.getAllTodos();
+      final result = await DbController.db.getAllTodos();
       return result;
     });
   }

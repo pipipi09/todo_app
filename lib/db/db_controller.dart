@@ -6,9 +6,9 @@ import 'package:sqflite/sqflite.dart';
 import '../model/todo_model.dart';
 
 /// DBにアクセスする
-class DbProvider {
-  DbProvider._();
-  static final DbProvider db = DbProvider._();
+class DbController {
+  DbController._();
+  static final DbController db = DbController._();
 
   static Database? _database;
 
@@ -37,14 +37,14 @@ class DbProvider {
 
   createTodo(TodoModel todo) async {
     final db = await database;
-    var res = await db.insert(_tableName, todo.toMap());
+    var res = await db.insert(_tableName, todo.toJson());
     return res;
   }
 
   Future<List<TodoModel>> getAllTodos() async {
     final db = await database;
     var res = await db.query(_tableName);
-    final List<TodoModel> list = res.map((c) => TodoModel.fromMap(c)).toList();
+    final List<TodoModel> list = res.map((c) => TodoModel.fromJson(c)).toList();
     return list;
   }
 
@@ -52,7 +52,7 @@ class DbProvider {
     final db = await database;
     var res = await db.update(
       _tableName,
-      todo.toMap(),
+      todo.toJson(),
       where: "id = ?",
       whereArgs: [todo.id],
     );

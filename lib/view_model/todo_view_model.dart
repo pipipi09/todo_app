@@ -11,7 +11,9 @@ final todoListViewModelProvider =
 );
 
 class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
-  TodoListViewModel(this.todoRepository) : super(const AsyncData([]));
+  TodoListViewModel(this.todoRepository) : super(const AsyncData([])) {
+    load();
+  }
 
   final TodoRepository todoRepository;
 
