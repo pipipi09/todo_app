@@ -1,6 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../model/dummy_todos.dart';
 import '../model/todo_model.dart';
 import '../repository/todo_repository.dart';
 import '../repository/todo_repository_impl.dart';
@@ -21,7 +20,20 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
     final result = await todoRepository.fetch();
     result.when(
       success: (data) {
-        state = AsyncValue.data(dummyTodos);
+        state = AsyncValue.data(data);
+      },
+      failure: (error) {
+        state = AsyncValue.error(error);
+      },
+    );
+  }
+
+  Future<void> save(TodoModel todo) async {
+    final result = await todoRepository.save(todo);
+    result.when(
+      success: (data) {
+        print(data);
+        load();
       },
       failure: (error) {
         state = AsyncValue.error(error);

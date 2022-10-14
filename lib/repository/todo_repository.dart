@@ -3,4 +3,6 @@ import '../model/todo_model.dart';
 
 abstract class TodoRepository {
   Future<Result<List<TodoModel>>> fetch();
+
+  Future<Result<int>> save(TodoModel todo);
 }

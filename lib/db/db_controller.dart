@@ -35,7 +35,7 @@ class DbController {
 
   static const _tableName = "todos";
 
-  createTodo(TodoModel todo) async {
+  Future<int> createTodo(TodoModel todo) async {
     final db = await database;
     var res = await db.insert(_tableName, todo.toJson());
     return res;

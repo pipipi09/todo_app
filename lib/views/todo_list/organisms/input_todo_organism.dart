@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class InputTodoOrganism extends StatelessWidget {
+import '../../../model/todo_model.dart';
+import '../../../view_model/todo_view_model.dart';
+
+class InputTodoOrganism extends ConsumerWidget {
   const InputTodoOrganism({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    TodoModel newTodo = const TodoModel();
     return Container(
       margin: const EdgeInsets.only(top: 64),
       padding: const EdgeInsets.all(30),
@@ -17,8 +22,11 @@ class InputTodoOrganism extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const TextField(
-            decoration: InputDecoration(labelText: 'Todo'),
+          TextField(
+            decoration: const InputDecoration(labelText: 'Todo'),
+            onChanged: (String text) {
+              newTodo = TodoModel(text: text);
+            },
           ),
           const SizedBox(height: 20),
           Row(
@@ -50,7 +58,9 @@ class InputTodoOrganism extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               minimumSize: const Size(double.infinity, 40),
             ),
-            onPressed: () {},
+            onPressed: () {
+              ref.read(todoListViewModelProvider.notifier).save(newTodo);
+            },
             child: const Text('Save'),
           )
         ],
