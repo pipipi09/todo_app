@@ -35,17 +35,14 @@ class DbController {
 
   static const _tableName = "todos";
 
-  Future<int> createTodo(TodoModel todo) async {
+  Future<int> createTodo(Map<String, Object?> json) async {
     final db = await database;
-    var res = await db.insert(_tableName, todo.toJson());
-    return res;
+    return db.insert(_tableName, json);
   }
 
-  Future<List<TodoModel>> getAllTodos() async {
+  Future<List<Map<String, Object?>>> getAllTodos() async {
     final db = await database;
-    var res = await db.query(_tableName);
-    final List<TodoModel> list = res.map((c) => TodoModel.fromJson(c)).toList();
-    return list;
+    return db.query(_tableName);
   }
 
   updateTodo(TodoModel todo) async {

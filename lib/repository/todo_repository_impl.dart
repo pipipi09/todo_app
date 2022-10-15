@@ -13,15 +13,16 @@ class TodoRepositoryImpl implements TodoRepository {
 
   @override
   Future<Result<List<TodoModel>>> fetch() async {
-    return Result.guardFuture(
-      () async => await DbController.db.getAllTodos(),
-    );
+    return Result.guardFuture(() async {
+      final result = await DbController.db.getAllTodos();
+      return result.map((e) => TodoModel.fromJson(e)).toList();
+    });
   }
 
   @override
   Future<Result<int>> save(TodoModel todo) async {
     return Result.guardFuture(
-      () async => await DbController.db.createTodo(todo),
+      () async => await DbController.db.createTodo(todo.toJson()),
     );
   }
 }

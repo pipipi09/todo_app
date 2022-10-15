@@ -32,7 +32,6 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
     final result = await todoRepository.save(todo);
     result.when(
       success: (data) {
-        print(data);
         load();
       },
       failure: (error) {

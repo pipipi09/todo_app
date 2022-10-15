@@ -10,19 +10,19 @@ class TodoModel with _$TodoModel {
     String? id,
 
     /// Todoの内容
-    String? text,
+    @Default('') String? text,
 
-    /// Todoを行う日付
-    int? date,
+    /// Todoを行う日付 UnixTime
+    @Default(0) int? date,
 
     /// 完了したかどうか
-    int? done,
+    @Default(0) int? done,
 
-    /// 作成日
-    int? createdAt,
+    /// 作成日 UnixTime
+    @JsonKey(name: 'created_at') @Default(0) int? createdAt,
 
-    /// 更新日
-    int? updatedAt,
+    /// 更新日 UnixTime
+    @JsonKey(name: 'updated_at') @Default(0) int? updatedAt,
   }) = _TodoModel;
 
   const TodoModel._();

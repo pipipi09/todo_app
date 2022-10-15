@@ -26,16 +26,18 @@ mixin _$TodoModel {
   /// Todoの内容
   String? get text => throw _privateConstructorUsedError;
 
-  /// Todoを行う日付
+  /// Todoを行う日付 UnixTime
   int? get date => throw _privateConstructorUsedError;
 
   /// 完了したかどうか
   int? get done => throw _privateConstructorUsedError;
 
-  /// 作成日
+  /// 作成日 UnixTime
+  @JsonKey(name: 'created_at')
   int? get createdAt => throw _privateConstructorUsedError;
 
-  /// 更新日
+  /// 更新日 UnixTime
+  @JsonKey(name: 'updated_at')
   int? get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -53,8 +55,8 @@ abstract class $TodoModelCopyWith<$Res> {
       String? text,
       int? date,
       int? done,
-      int? createdAt,
-      int? updatedAt});
+      @JsonKey(name: 'created_at') int? createdAt,
+      @JsonKey(name: 'updated_at') int? updatedAt});
 }
 
 /// @nodoc
@@ -114,8 +116,8 @@ abstract class _$$_TodoModelCopyWith<$Res> implements $TodoModelCopyWith<$Res> {
       String? text,
       int? date,
       int? done,
-      int? createdAt,
-      int? updatedAt});
+      @JsonKey(name: 'created_at') int? createdAt,
+      @JsonKey(name: 'updated_at') int? updatedAt});
 }
 
 /// @nodoc
@@ -171,11 +173,11 @@ class __$$_TodoModelCopyWithImpl<$Res> extends _$TodoModelCopyWithImpl<$Res>
 class _$_TodoModel extends _TodoModel {
   const _$_TodoModel(
       {this.id,
-      this.text,
-      this.date,
-      this.done,
-      this.createdAt,
-      this.updatedAt})
+      this.text = '',
+      this.date = 0,
+      this.done = 0,
+      @JsonKey(name: 'created_at') this.createdAt = 0,
+      @JsonKey(name: 'updated_at') this.updatedAt = 0})
       : super._();
 
   factory _$_TodoModel.fromJson(Map<String, dynamic> json) =>
@@ -187,22 +189,27 @@ class _$_TodoModel extends _TodoModel {
 
   /// Todoの内容
   @override
+  @JsonKey()
   final String? text;
 
-  /// Todoを行う日付
+  /// Todoを行う日付 UnixTime
   @override
+  @JsonKey()
   final int? date;
 
   /// 完了したかどうか
   @override
+  @JsonKey()
   final int? done;
 
-  /// 作成日
+  /// 作成日 UnixTime
   @override
+  @JsonKey(name: 'created_at')
   final int? createdAt;
 
-  /// 更新日
+  /// 更新日 UnixTime
   @override
+  @JsonKey(name: 'updated_at')
   final int? updatedAt;
 
   @override
@@ -251,8 +258,8 @@ abstract class _TodoModel extends TodoModel {
       final String? text,
       final int? date,
       final int? done,
-      final int? createdAt,
-      final int? updatedAt}) = _$_TodoModel;
+      @JsonKey(name: 'created_at') final int? createdAt,
+      @JsonKey(name: 'updated_at') final int? updatedAt}) = _$_TodoModel;
   const _TodoModel._() : super._();
 
   factory _TodoModel.fromJson(Map<String, dynamic> json) =
@@ -268,7 +275,7 @@ abstract class _TodoModel extends TodoModel {
   String? get text => throw _privateConstructorUsedError;
   @override
 
-  /// Todoを行う日付
+  /// Todoを行う日付 UnixTime
   int? get date => throw _privateConstructorUsedError;
   @override
 
@@ -276,11 +283,13 @@ abstract class _TodoModel extends TodoModel {
   int? get done => throw _privateConstructorUsedError;
   @override
 
-  /// 作成日
+  /// 作成日 UnixTime
+  @JsonKey(name: 'created_at')
   int? get createdAt => throw _privateConstructorUsedError;
   @override
 
-  /// 更新日
+  /// 更新日 UnixTime
+  @JsonKey(name: 'updated_at')
   int? get updatedAt => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
