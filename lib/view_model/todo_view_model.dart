@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:uuid/uuid.dart';
 
 import '../model/todo_model.dart';
 import '../repository/todo_repository.dart';
@@ -29,7 +30,25 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
   }
 
   Future<void> save(TodoModel todo) async {
-    final result = await todoRepository.save(todo);
+    const uuid = Uuid();
+    if (todo.id == null) {
+      final saveData = todo.copyWith(id: uuid.v4());
+      final result = await todoRepository.save(saveData);
+      result.when(
+        success: (data) {
+          load();
+        },
+        failure: (error) {
+          state = AsyncValue.error(error);
+        },
+      );
+    } else {
+      throw const FormatException('primary key is not null');
+    }
+  }
+
+  Future<void> update(TodoModel todo) async {
+    final result = await todoRepository.update(todo);
     result.when(
       success: (data) {
         load();

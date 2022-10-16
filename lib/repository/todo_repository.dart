@@ -5,4 +5,6 @@ abstract class TodoRepository {
   Future<Result<List<TodoModel>>> fetch();
 
   Future<Result<int>> save(TodoModel todo);
+
+  Future<Result<int>> update(TodoModel todo);
 }

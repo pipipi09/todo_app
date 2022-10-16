@@ -45,15 +45,14 @@ class DbController {
     return db.query(_tableName);
   }
 
-  updateTodo(TodoModel todo) async {
+  Future<int> updateTodo(Map<String, Object?> json, String primaryKey) async {
     final db = await database;
-    var res = await db.update(
+    return db.update(
       _tableName,
-      todo.toJson(),
+      json,
       where: "id = ?",
-      whereArgs: [todo.id],
+      whereArgs: [primaryKey],
     );
-    return res;
   }
 
   deleteTodo(String id) async {
