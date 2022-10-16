@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../view_model/todo_view_model.dart';
+import '../molecules/todo_list_item_molecule.dart';
 
 class TodoListOrganism extends ConsumerWidget {
   const TodoListOrganism({super.key});
@@ -13,10 +14,7 @@ class TodoListOrganism extends ConsumerWidget {
       itemCount: todos.length,
       itemBuilder: (context, index) {
         final todo = todos[index];
-        return ListTile(
-          leading: const Icon(Icons.circle_outlined),
-          title: Text(todo.text ?? ''),
-        );
+        return TodoListItemMolecule(todo: todo);
       },
     );
   }
