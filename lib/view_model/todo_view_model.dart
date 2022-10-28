@@ -58,4 +58,16 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
       },
     );
   }
+
+  Future<void> delete(TodoModel todo) async {
+    final result = await todoRepository.delete(todo);
+    result.when(
+      success: (data) {
+        load();
+      },
+      failure: (error) {
+        state = AsyncValue.error(error);
+      },
+    );
+  }
 }

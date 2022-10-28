@@ -28,9 +28,15 @@ class TodoRepositoryImpl implements TodoRepository {
 
   @override
   Future<Result<int>> update(TodoModel todo) async {
-    print(todo);
     return Result.guardFuture(
       () async => await DbController.db.updateTodo(todo.toJson(), todo.id!),
+    );
+  }
+
+  @override
+  Future<Result<int>> delete(TodoModel todo) async {
+    return Result.guardFuture(
+      () async => await DbController.db.deleteTodo(todo.id!),
     );
   }
 }

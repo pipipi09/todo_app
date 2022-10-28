@@ -55,7 +55,7 @@ class DbController {
     );
   }
 
-  deleteTodo(String id) async {
+  Future<int> deleteTodo(String id) async {
     final db = await database;
     var res = db.delete(_tableName, where: "id = ?", whereArgs: [id]);
     return res;
