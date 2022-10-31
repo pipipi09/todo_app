@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../organisms/app_bar_organism.dart';
-import 'organisms/input_todo_organism.dart';
+import 'organisms/input_todo_organism/input_todo_organism.dart';
 import 'organisms/todo_list_organism.dart';
 
 class TodoListPage extends HookConsumerWidget {

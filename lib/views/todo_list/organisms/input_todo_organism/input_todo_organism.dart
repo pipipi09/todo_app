@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../model/todo_model.dart';
-import '../../../view_model/todo_view_model.dart';
+import '../../../../model/todo_model.dart';
+import '../../../../view_model/todo_view_model.dart';
+import 'atoms/submit_btn_atom.dart';
+import 'atoms/text_field_atom.dart';
 
 class InputTodoOrganism extends ConsumerWidget {
   const InputTodoOrganism({super.key});
@@ -22,8 +24,8 @@ class InputTodoOrganism extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          TextField(
-            decoration: const InputDecoration(labelText: 'Todo'),
+          TextFieldAtom(
+            label: 'Todo',
             onChanged: (String text) {
               newTodo = TodoModel(text: text);
             },
@@ -54,15 +56,12 @@ class InputTodoOrganism extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: 20),
-          OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              minimumSize: const Size(double.infinity, 40),
-            ),
+          SubmitBtnAtom(
+            label: 'Save',
             onPressed: () {
               ref.read(todoListViewModelProvider.notifier).save(newTodo);
             },
-            child: const Text('Save'),
-          )
+          ),
         ],
       ),
     );
