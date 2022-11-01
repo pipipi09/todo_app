@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:intl/intl.dart';
 
 part 'todo_model.freezed.dart';
 part 'todo_model.g.dart';
@@ -31,4 +32,8 @@ class TodoModel with _$TodoModel {
   @override
   factory TodoModel.fromJson(Map<String, dynamic> json) =>
       _$TodoModelFromJson(json);
+
+  get dateTime => DateTime.fromMillisecondsSinceEpoch(date ?? 0);
+
+  get formatDate => DateFormat('yyyy-MM-dd').format(dateTime);
 }
