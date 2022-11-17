@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../model/todo_model.dart';
@@ -6,18 +7,20 @@ import '../../../../../view_model/todo_view_model.dart';
 import '../atoms/submit_btn_atom.dart';
 import '../atoms/text_field_atom.dart';
 
-class InputTodoMolecule extends ConsumerWidget {
+class InputTodoMolecule extends HookConsumerWidget {
   const InputTodoMolecule({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    TodoModel newTodo = TodoModel(date: DateTime.now().millisecondsSinceEpoch);
+    var newTodo =
+        useState(TodoModel(date: DateTime.now().millisecondsSinceEpoch));
+
     return Column(
       children: [
         TextFieldAtom(
           label: 'Todo',
           onChanged: (String text) {
-            newTodo = newTodo.copyWith(text: text);
+            newTodo.value = newTodo.value.copyWith(text: text);
           },
         ),
         const SizedBox(height: 20),
@@ -27,17 +30,18 @@ class InputTodoMolecule extends ConsumerWidget {
             const Text('Date'),
             Row(
               children: [
-                Text('${newTodo.formatDate}'),
+                Text('${newTodo.value.formatDate}'),
                 IconButton(
                   onPressed: () async {
                     final DateTime? pickedDate = await showDatePicker(
                       context: context,
-                      initialDate: newTodo.dateTime,
+                      initialDate: newTodo.value.dateTime,
                       firstDate: DateTime(2022),
                       lastDate: DateTime(2030),
                     );
+
                     if (pickedDate != null) {
-                      newTodo = newTodo.copyWith(
+                      newTodo.value = newTodo.value.copyWith(
                         date: pickedDate.millisecondsSinceEpoch,
                       );
                     }
@@ -54,7 +58,7 @@ class InputTodoMolecule extends ConsumerWidget {
         SubmitBtnAtom(
           label: 'Save',
           onPressed: () {
-            ref.read(todoListViewModelProvider.notifier).save(newTodo);
+            ref.read(todoListViewModelProvider.notifier).save(newTodo.value);
           },
         ),
       ],

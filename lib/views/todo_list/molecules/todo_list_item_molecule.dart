@@ -50,6 +50,10 @@ class TodoListItemMolecule extends ConsumerWidget {
               .read(todoListViewModelProvider.notifier)
               .update(todo.copyWith(done: todoDone));
         },
+        trailing: GestureDetector(
+          onTap: () {},
+          child: const Icon(Icons.create_rounded),
+        ),
       ),
     );
   }
