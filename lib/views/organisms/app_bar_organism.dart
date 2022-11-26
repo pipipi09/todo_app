@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class AppBarSection extends StatelessWidget implements PreferredSizeWidget {
-  const AppBarSection({super.key});
+class AppBarOrganism extends StatelessWidget implements PreferredSizeWidget {
+  const AppBarOrganism({super.key, this.onPressed});
+
+  final VoidCallback? onPressed;
 
   @override
   Size get preferredSize => const Size.fromHeight(50);
@@ -19,7 +21,7 @@ class AppBarSection extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: onPressed,
           icon: const Icon(
             Icons.calendar_month_rounded,
             color: Colors.white,

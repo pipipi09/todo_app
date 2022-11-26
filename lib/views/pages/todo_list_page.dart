@@ -4,6 +4,7 @@ import '../../model/todo_model.dart';
 import '../organisms/app_bar_organism.dart';
 import '../todo_list/organisms/input_todo_organism/input_todo_organism.dart';
 import '../todo_list/organisms/todo_list_organism.dart';
+import 'calendar_page.dart';
 
 class TodoListPage extends HookConsumerWidget {
   const TodoListPage({super.key});
@@ -11,7 +12,16 @@ class TodoListPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: const AppBarSection(),
+      appBar: AppBarOrganism(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CalendarPage(),
+            ),
+          );
+        },
+      ),
       body: const SafeArea(
         child: TodoListOrganism(),
       ),
