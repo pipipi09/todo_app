@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../model/todo_model.dart';
 import '../../../view_model/todo_view_model.dart';
+import '../organisms/input_todo_organism/input_todo_organism.dart';
 
 class TodoListItemMolecule extends ConsumerWidget {
   const TodoListItemMolecule({super.key, required this.todo});
@@ -48,10 +49,19 @@ class TodoListItemMolecule extends ConsumerWidget {
           final todoDone = todo.done == 0 ? 1 : 0;
           ref
               .read(todoListViewModelProvider.notifier)
-              .update(todo.copyWith(done: todoDone));
+              .save(todo.copyWith(done: todoDone));
         },
         trailing: GestureDetector(
-          onTap: () {},
+          onTap: () {
+            showModalBottomSheet(
+              backgroundColor: Colors.transparent,
+              isScrollControlled: true,
+              context: context,
+              builder: (BuildContext context) {
+                return InputTodoOrganism(editTodo: todo);
+              },
+            );
+          },
           child: const Icon(Icons.create_rounded),
         ),
       ),

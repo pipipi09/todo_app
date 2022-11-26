@@ -8,20 +8,21 @@ import '../atoms/submit_btn_atom.dart';
 import '../atoms/text_field_atom.dart';
 
 class InputTodoMolecule extends HookConsumerWidget {
-  const InputTodoMolecule({super.key});
+  const InputTodoMolecule({required this.todo, super.key});
+
+  final TodoModel todo;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var newTodo =
-        useState(TodoModel(date: DateTime.now().millisecondsSinceEpoch));
+    var editTodo = useState(todo.copyWith());
+    final textEditingController =
+        TextEditingController(text: editTodo.value.text);
 
     return Column(
       children: [
         TextFieldAtom(
           label: 'Todo',
-          onChanged: (String text) {
-            newTodo.value = newTodo.value.copyWith(text: text);
-          },
+          controller: textEditingController,
         ),
         const SizedBox(height: 20),
         Row(
@@ -30,18 +31,18 @@ class InputTodoMolecule extends HookConsumerWidget {
             const Text('Date'),
             Row(
               children: [
-                Text('${newTodo.value.formatDate}'),
+                Text('${editTodo.value.formatDate}'),
                 IconButton(
                   onPressed: () async {
                     final DateTime? pickedDate = await showDatePicker(
                       context: context,
-                      initialDate: newTodo.value.dateTime,
+                      initialDate: editTodo.value.dateTime,
                       firstDate: DateTime(2022),
                       lastDate: DateTime(2030),
                     );
 
                     if (pickedDate != null) {
-                      newTodo.value = newTodo.value.copyWith(
+                      editTodo.value = editTodo.value.copyWith(
                         date: pickedDate.millisecondsSinceEpoch,
                       );
                     }
@@ -58,7 +59,9 @@ class InputTodoMolecule extends HookConsumerWidget {
         SubmitBtnAtom(
           label: 'Save',
           onPressed: () {
-            ref.read(todoListViewModelProvider.notifier).save(newTodo.value);
+            editTodo.value =
+                editTodo.value.copyWith(text: textEditingController.text);
+            ref.read(todoListViewModelProvider.notifier).save(editTodo.value);
           },
         ),
       ],

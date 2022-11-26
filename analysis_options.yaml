@@ -28,6 +28,7 @@ linter:
     lines_longer_than_80_chars: true
     require_trailing_commas: true
     secure_pubspec_urls: true
+    # public_member_api_docs: true
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
 

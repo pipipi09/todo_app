@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../model/todo_model.dart';
 import 'molecules/input_todo_molecule.dart';
 
 class InputTodoOrganism extends ConsumerWidget {
-  const InputTodoOrganism({super.key});
+  const InputTodoOrganism({required this.editTodo, super.key});
+
+  final TodoModel editTodo;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,7 +21,9 @@ class InputTodoOrganism extends ConsumerWidget {
           topRight: Radius.circular(20),
         ),
       ),
-      child: const InputTodoMolecule(),
+      child: InputTodoMolecule(
+        todo: editTodo,
+      ),
     );
   }
 }

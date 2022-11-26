@@ -4,18 +4,18 @@ class TextFieldAtom extends StatelessWidget {
   const TextFieldAtom({
     super.key,
     this.label = '',
-    required this.onChanged,
+    this.controller,
   });
 
   final String label;
 
-  final ValueChanged<String> onChanged;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(labelText: label),
-      onChanged: onChanged,
+      controller: controller,
     );
   }
 }

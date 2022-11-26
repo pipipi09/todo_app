@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../model/todo_model.dart';
 import '../organisms/app_bar_organism.dart';
-import 'organisms/input_todo_organism/input_todo_organism.dart';
-import 'organisms/todo_list_organism.dart';
+import '../todo_list/organisms/input_todo_organism/input_todo_organism.dart';
+import '../todo_list/organisms/todo_list_organism.dart';
 
 class TodoListPage extends HookConsumerWidget {
   const TodoListPage({super.key});
@@ -21,7 +22,10 @@ class TodoListPage extends HookConsumerWidget {
             isScrollControlled: true,
             context: context,
             builder: (BuildContext context) {
-              return const InputTodoOrganism();
+              return InputTodoOrganism(
+                editTodo:
+                    TodoModel(date: DateTime.now().millisecondsSinceEpoch),
+              );
             },
           );
         },
