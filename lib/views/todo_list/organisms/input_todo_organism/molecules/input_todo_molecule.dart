@@ -58,10 +58,18 @@ class InputTodoMolecule extends HookConsumerWidget {
         const SizedBox(height: 20),
         SubmitBtnAtom(
           label: 'Save',
-          onPressed: () {
+          onPressed: () async {
             editTodo.value =
                 editTodo.value.copyWith(text: textEditingController.text);
-            ref.read(todoListViewModelProvider.notifier).save(editTodo.value);
+
+            final result = await ref
+                .read(todoListViewModelProvider.notifier)
+                .save(editTodo.value);
+
+            final mounted =
+                ref.read(todoListViewModelProvider.notifier).mounted;
+
+            if (mounted && result.isSuccess) Navigator.pop(context);
           },
         ),
       ],

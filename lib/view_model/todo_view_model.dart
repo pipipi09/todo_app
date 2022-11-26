@@ -1,6 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
+import '../model/result/result.dart';
 import '../model/todo_model.dart';
 import '../repository/todo_repository.dart';
 import '../repository/todo_repository_impl.dart';
@@ -23,55 +24,63 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
   final TodoRepository todoRepository;
 
   /// データを取得する
-  Future<void> load() async {
+  Future<Result<List<TodoModel>>> load() async {
     final result = await todoRepository.fetch();
-    result.when(
+    return result.when(
       success: (data) {
         state = AsyncValue.data(data);
+        return Result.success(data: data);
       },
       failure: (error) {
         state = AsyncValue.error(error);
+        return Result.failure(error: error);
       },
     );
   }
 
   /// [todo]を保存する
   /// primary keyがなければsave, あればupdateをする
-  Future<void> save(TodoModel todo) async {
+  Future<Result<int>> save(TodoModel todo) async {
     const uuid = Uuid();
     if (todo.id == null) {
       final saveData = todo.copyWith(id: uuid.v4());
       final result = await todoRepository.save(saveData);
-      result.when(
+      return result.when(
         success: (data) {
           load();
+          return Result.success(data: data);
         },
         failure: (error) {
           state = AsyncValue.error(error);
+          return Result.failure(error: error);
         },
       );
     } else {
       final result = await todoRepository.update(todo);
-      result.when(
+      return result.when(
         success: (data) {
           load();
+          return Result.success(data: data);
         },
         failure: (error) {
           state = AsyncValue.error(error);
+          return Result.failure(error: error);
         },
       );
     }
   }
 
   /// [todo]で指定したデータを削除する
-  Future<void> delete(TodoModel todo) async {
+  Future<Result<int>> delete(TodoModel todo) async {
     final result = await todoRepository.delete(todo);
-    result.when(
+    return result.when(
       success: (data) {
         load();
+        return Result.success(data: data);
       },
       failure: (error) {
         state = AsyncValue.error(error);
+        return Result.failure(error: error);
       },
     );
   }
