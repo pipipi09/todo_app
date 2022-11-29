@@ -2,7 +2,10 @@ import '../model/result/result.dart';
 import '../model/todo_model.dart';
 
 abstract class TodoRepository {
-  Future<Result<List<TodoModel>>> fetch();
+  Future<Result<List<TodoModel>>> fetch({
+    String? where,
+    List? whereArgs,
+  });
 
   Future<Result<int>> save(TodoModel todo);
 

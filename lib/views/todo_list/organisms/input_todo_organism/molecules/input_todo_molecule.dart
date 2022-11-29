@@ -66,10 +66,16 @@ class InputTodoMolecule extends HookConsumerWidget {
                 .read(todoListViewModelProvider.notifier)
                 .save(editTodo.value);
 
-            final mounted =
-                ref.read(todoListViewModelProvider.notifier).mounted;
+            if (result.isSuccess) {
+              ref
+                  .read(todoListViewModelProvider.notifier)
+                  .loadByDate(editTodo.value.dateTime);
 
-            if (mounted && result.isSuccess) Navigator.pop(context);
+              final mounted =
+                  ref.read(todoListViewModelProvider.notifier).mounted;
+
+              if (mounted) Navigator.pop(context);
+            }
           },
         ),
       ],

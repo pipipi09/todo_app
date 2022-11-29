@@ -46,9 +46,20 @@ class DbController {
   }
 
   /// tableから全てのデータを取得する
-  Future<List<Map<String, Object?>>> getAllTodos() async {
+  /// [where]は id = ? のような形式にする
+  Future<List<Map<String, Object?>>> getTodos({
+    String? where,
+    List? whereArgs,
+  }) async {
     final db = await database;
-    return db.query(_tableName);
+    if (where == null || whereArgs == null) {
+      return db.query(_tableName);
+    }
+    return db.query(
+      _tableName,
+      where: where,
+      whereArgs: whereArgs,
+    );
   }
 
   /// tableのidに一致する[primaryKey]を指定してレコードをupdateする

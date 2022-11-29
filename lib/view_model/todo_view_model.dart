@@ -17,15 +17,23 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
   /// constructor
   /// インスタンス生成時にloadを実行してデータを取得する
   TodoListViewModel(this.todoRepository) : super(const AsyncData([])) {
-    load();
+    loadByDate(DateTime.now());
   }
 
   /// todoRepository
   final TodoRepository todoRepository;
 
-  /// データを取得する
-  Future<Result<List<TodoModel>>> load() async {
-    final result = await todoRepository.fetch();
+  /// 1日分のデータを取得する
+  Future<Result<List<TodoModel>>> loadByDate(DateTime date) async {
+    final startOfDate = DateTime(date.year, date.month, date.day);
+    final endOfDate = DateTime(date.year, date.month, date.day, 23, 59);
+    const where = "date between ? and ?";
+    final whereArgs = [
+      startOfDate.millisecondsSinceEpoch,
+      endOfDate.millisecondsSinceEpoch
+    ];
+    final result =
+        await todoRepository.fetch(where: where, whereArgs: whereArgs);
     return result.when(
       success: (data) {
         state = AsyncValue.data(data);
@@ -47,7 +55,6 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
       final result = await todoRepository.save(saveData);
       return result.when(
         success: (data) {
-          load();
           return Result.success(data: data);
         },
         failure: (error) {
@@ -59,7 +66,8 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
       final result = await todoRepository.update(todo);
       return result.when(
         success: (data) {
-          load();
+          final now = DateTime.now();
+          loadByDate(now);
           return Result.success(data: data);
         },
         failure: (error) {
@@ -75,7 +83,8 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
     final result = await todoRepository.delete(todo);
     return result.when(
       success: (data) {
-        load();
+        final now = DateTime.now();
+        loadByDate(now);
         return Result.success(data: data);
       },
       failure: (error) {

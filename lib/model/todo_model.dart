@@ -33,7 +33,7 @@ class TodoModel with _$TodoModel {
   factory TodoModel.fromJson(Map<String, dynamic> json) =>
       _$TodoModelFromJson(json);
 
-  get dateTime => DateTime.fromMillisecondsSinceEpoch(date ?? 0);
+  DateTime get dateTime => DateTime.fromMillisecondsSinceEpoch(date ?? 0);
 
-  get formatDate => DateFormat('yyyy-MM-dd').format(dateTime);
+  String get formatDate => DateFormat('yyyy-MM-dd').format(dateTime);
 }
