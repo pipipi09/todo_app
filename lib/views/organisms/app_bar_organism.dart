@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AppBarOrganism extends StatelessWidget implements PreferredSizeWidget {
-  const AppBarOrganism({super.key, this.onPressed});
+  const AppBarOrganism({
+    super.key,
+    this.onPressed,
+    required this.date,
+  });
 
   final VoidCallback? onPressed;
+
+  final DateTime date;
 
   @override
   Size get preferredSize => const Size.fromHeight(50);
 
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
     return AppBar(
       title: Text(
-        DateFormat('yyyy/MM/dd').format(now),
+        DateFormat('yyyy/MM/dd').format(date),
         style: const TextStyle(
           color: Colors.white,
         ),

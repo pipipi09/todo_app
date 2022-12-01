@@ -5,19 +5,23 @@ import '../model/result/result.dart';
 import '../model/todo_model.dart';
 import '../repository/todo_repository.dart';
 import '../repository/todo_repository_impl.dart';
+import 'date_view_model.dart';
 
 /// Todoリストを取得し配布する
 final todoListViewModelProvider =
     StateNotifierProvider<TodoListViewModel, AsyncValue<List<TodoModel>>>(
-  (ref) => TodoListViewModel(ref.watch(todoRepositoryProvider)),
+  (ref) => TodoListViewModel(
+    ref.watch(todoRepositoryProvider),
+    ref.watch(dateViewModelProvider),
+  ),
 );
 
 /// Todoリスト
 class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
   /// constructor
   /// インスタンス生成時にloadを実行してデータを取得する
-  TodoListViewModel(this.todoRepository) : super(const AsyncData([])) {
-    loadByDate(DateTime.now());
+  TodoListViewModel(this.todoRepository, date) : super(const AsyncData([])) {
+    loadByDate(date);
   }
 
   /// todoRepository
