@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../view_model/calendar_view_model.dart';
 import '../../view_model/date_view_model.dart';
 import '../../view_model/todo_view_model.dart';
 
@@ -12,6 +13,7 @@ class CalendarOrganism extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final date = ref.watch(dateViewModelProvider);
+    final todosMap = ref.watch(dayTodoMapProvider);
     var focusedDay = useState<DateTime>(date);
     var selectedDay = useState<DateTime>(date);
     return TableCalendar(
@@ -24,12 +26,19 @@ class CalendarOrganism extends HookConsumerWidget {
       calendarFormat: CalendarFormat.month,
       selectedDayPredicate: (day) => isSameDay(selectedDay.value, day),
       onDaySelected: (selected, forcused) {
-        selectedDay.value = selected;
-        focusedDay.value = forcused;
-        ref.read(dateViewModelProvider.notifier).changeDate(selectedDay.value);
-        ref
-            .read(todoListViewModelProvider.notifier)
-            .loadByDate(selectedDay.value);
+        if (!isSameDay(selectedDay.value, selected)) {
+          selectedDay.value = selected;
+          focusedDay.value = forcused;
+          ref
+              .read(dateViewModelProvider.notifier)
+              .changeDate(selectedDay.value);
+          ref
+              .read(todoListViewModelProvider.notifier)
+              .loadByDate(selectedDay.value);
+        }
+      },
+      eventLoader: (day) {
+        return todosMap[day] ?? [];
       },
     );
   }
