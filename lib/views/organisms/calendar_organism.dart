@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../model/todo_model.dart';
 import '../../view_model/calendar_view_model.dart';
 import '../../view_model/date_view_model.dart';
 import '../../view_model/todo_view_model.dart';
@@ -25,10 +26,10 @@ class CalendarOrganism extends HookConsumerWidget {
       ),
       calendarFormat: CalendarFormat.month,
       selectedDayPredicate: (day) => isSameDay(selectedDay.value, day),
-      onDaySelected: (selected, forcused) {
+      onDaySelected: (selected, focused) {
         if (!isSameDay(selectedDay.value, selected)) {
           selectedDay.value = selected;
-          focusedDay.value = forcused;
+          focusedDay.value = focused;
           ref
               .read(dateViewModelProvider.notifier)
               .changeDate(selectedDay.value);
@@ -40,6 +41,46 @@ class CalendarOrganism extends HookConsumerWidget {
       eventLoader: (day) {
         return todosMap[day] ?? [];
       },
+      calendarBuilders: CalendarBuilders(
+        markerBuilder:
+            (BuildContext context, DateTime day, List<TodoModel> events) {
+          if (events.isEmpty) return null;
+          if (events.every((todo) => todo.done == 1)) {
+            return Positioned.fill(
+              child: Align(
+                alignment: Alignment.center,
+                child: Opacity(
+                  opacity: 0.5,
+                  child: Container(
+                    width: 43,
+                    height: 43,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.deepOrange[100],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
+          return Positioned.fill(
+            child: Align(
+              alignment: Alignment.center,
+              child: Opacity(
+                opacity: 0.5,
+                child: Container(
+                  width: 43,
+                  height: 43,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.deepOrange[100],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

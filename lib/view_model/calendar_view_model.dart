@@ -20,10 +20,12 @@ final dayTodoMapProvider =
         ref.watch(calendarViewModelProvider).valueOrNull ?? <TodoModel>[];
     final mapedTodos =
         todos.fold<Map<DateTime, List<TodoModel>>>({}, (acc, todo) {
-      if (acc.containsKey(todo.dateTime)) {
-        acc[todo.dateTime]!.add(todo);
+      final day =
+          DateTime(todo.dateTime.year, todo.dateTime.month, todo.dateTime.day);
+      if (acc.containsKey(day)) {
+        acc[day]!.add(todo);
       } else {
-        acc[todo.dateTime] = [todo];
+        acc[day] = [todo];
       }
       return acc;
     });
