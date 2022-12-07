@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../model/todo_model.dart';
 import '../../view_model/calendar_view_model.dart';
 import '../../view_model/date_view_model.dart';
 import '../../view_model/todo_view_model.dart';
@@ -41,9 +40,15 @@ class CalendarOrganism extends HookConsumerWidget {
       eventLoader: (day) {
         return todosMap[day] ?? [];
       },
+      calendarStyle: CalendarStyle(
+        todayDecoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.brown[50],
+        ),
+      ),
       calendarBuilders: CalendarBuilders(
         markerBuilder:
-            (BuildContext context, DateTime day, List<TodoModel> events) {
+            (BuildContext context, DateTime day, List<dynamic> events) {
           if (events.isEmpty) return null;
           if (events.every((todo) => todo.done == 1)) {
             return Positioned.fill(
@@ -51,12 +56,13 @@ class CalendarOrganism extends HookConsumerWidget {
                 alignment: Alignment.center,
                 child: Opacity(
                   opacity: 0.5,
-                  child: Container(
-                    width: 43,
-                    height: 43,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.deepOrange[100],
+                  child: SizedBox(
+                    child: Center(
+                      child: Icon(
+                        Icons.local_florist,
+                        color: Colors.red[200],
+                        size: 40,
+                      ),
                     ),
                   ),
                 ),
@@ -69,8 +75,8 @@ class CalendarOrganism extends HookConsumerWidget {
               child: Opacity(
                 opacity: 0.5,
                 child: Container(
-                  width: 43,
-                  height: 43,
+                  width: 40,
+                  height: 40,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.deepOrange[100],
