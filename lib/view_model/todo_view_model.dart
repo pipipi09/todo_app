@@ -3,7 +3,7 @@ import 'package:uuid/uuid.dart';
 
 import '../model/result/result.dart';
 import '../model/todo_model.dart';
-import '../repository/todo_repository.dart';
+import '../repository/repository.dart';
 import '../repository/todo_repository_impl.dart';
 import 'date_view_model.dart';
 
@@ -25,7 +25,7 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
   }
 
   /// todoRepository
-  final TodoRepository todoRepository;
+  final Repository<TodoModel> todoRepository;
 
   /// 1日分のデータを取得する
   Future<Result<List<TodoModel>>> loadByDate(DateTime date) async {

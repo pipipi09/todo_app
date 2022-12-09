@@ -36,47 +36,56 @@ class DbController {
     );
   }
 
-  static const _tableName = "todos";
-
   /// tableにレコードをinsertする
   /// [json]はレコードの内容
-  Future<int> createTodo(Map<String, Object?> json) async {
+  Future<int> create({
+    required String tableName,
+    required Map<String, Object?> json,
+  }) async {
     final db = await database;
-    return db.insert(_tableName, json);
+    return db.insert(tableName, json);
   }
 
   /// tableから全てのデータを取得する
   /// [where]は id = ? のような形式にする
-  Future<List<Map<String, Object?>>> getTodos({
+  Future<List<Map<String, Object?>>> get({
+    required String tableName,
     String? where,
     List? whereArgs,
   }) async {
     final db = await database;
     if (where == null || whereArgs == null) {
-      return db.query(_tableName);
+      return db.query(tableName);
     }
     return db.query(
-      _tableName,
+      tableName,
       where: where,
       whereArgs: whereArgs,
     );
   }
 
   /// tableのidに一致する[primaryKey]を指定してレコードをupdateする
-  Future<int> updateTodo(Map<String, Object?> json, String primaryKey) async {
+  Future<int> update({
+    required String tableName,
+    required Map<String, Object?> json,
+    required String primaryKey,
+  }) async {
     final db = await database;
     return db.update(
-      _tableName,
+      tableName,
       json,
       where: "id = ?",
       whereArgs: [primaryKey],
     );
   }
 
-  /// tableのidに一致する[id]を指定してレコードを削除する
-  Future<int> deleteTodo(String id) async {
+  /// tableのidに一致する[primaryKey]を指定してレコードを削除する
+  Future<int> delete({
+    required String tableName,
+    required String primaryKey,
+  }) async {
     final db = await database;
-    var res = db.delete(_tableName, where: "id = ?", whereArgs: [id]);
+    var res = db.delete(tableName, where: "id = ?", whereArgs: [primaryKey]);
     return res;
   }
 }

@@ -3,12 +3,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../db/db_controller.dart';
 import '../model/todo_model.dart';
 import '../model/result/result.dart';
-import 'todo_repository.dart';
+import 'repository.dart';
 
 final todoRepositoryProvider =
-    Provider<TodoRepository>((ref) => TodoRepositoryImpl());
+    Provider<Repository<TodoModel>>((ref) => TodoRepositoryImpl());
 
-class TodoRepositoryImpl implements TodoRepository {
+class TodoRepositoryImpl implements Repository<TodoModel> {
   TodoRepositoryImpl();
 
   @override
@@ -17,7 +17,8 @@ class TodoRepositoryImpl implements TodoRepository {
     List? whereArgs,
   }) async {
     return Result.guardFuture(() async {
-      final result = await DbController.db.getTodos(
+      final result = await DbController.db.get(
+        tableName: TodoModel.tableName,
         where: where,
         whereArgs: whereArgs,
       );
@@ -28,21 +29,29 @@ class TodoRepositoryImpl implements TodoRepository {
   @override
   Future<Result<int>> save(TodoModel todo) async {
     return Result.guardFuture(
-      () async => await DbController.db.createTodo(todo.toJson()),
+      () async => await DbController.db
+          .create(tableName: TodoModel.tableName, json: todo.toJson()),
     );
   }
 
   @override
   Future<Result<int>> update(TodoModel todo) async {
     return Result.guardFuture(
-      () async => await DbController.db.updateTodo(todo.toJson(), todo.id!),
+      () async => await DbController.db.update(
+        tableName: TodoModel.tableName,
+        json: todo.toJson(),
+        primaryKey: todo.id!,
+      ),
     );
   }
 
   @override
   Future<Result<int>> delete(TodoModel todo) async {
     return Result.guardFuture(
-      () async => await DbController.db.deleteTodo(todo.id!),
+      () async => await DbController.db.delete(
+        tableName: TodoModel.tableName,
+        primaryKey: todo.id!,
+      ),
     );
   }
 }
