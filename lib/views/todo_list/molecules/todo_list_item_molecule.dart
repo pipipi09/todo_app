@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../model/todo_model.dart';
+import '../../../model/todos/todo_model.dart';
 import '../../../view_model/todo_view_model.dart';
 import '../organisms/input_todo_organism/input_todo_organism.dart';
 

@@ -16,9 +16,6 @@ class TodoModel with _$TodoModel {
     /// Todoを行う日付 UnixTime
     @Default(0) int? date,
 
-    /// 完了したかどうか
-    @Default(0) int? done,
-
     /// 作成日 UnixTime
     @JsonKey(name: 'created_at') @Default(0) int? createdAt,
 

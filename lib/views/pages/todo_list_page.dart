@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../model/todo_model.dart';
+import '../../model/todos/todo_model.dart';
 import '../../view_model/date_view_model.dart';
 import '../organisms/app_bar_organism.dart';
 import '../todo_list/organisms/input_todo_organism/input_todo_organism.dart';

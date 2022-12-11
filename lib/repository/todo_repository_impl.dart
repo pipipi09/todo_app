@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../db/db_controller.dart';
-import '../model/todo_model.dart';
+import '../model/todos/todo_model.dart';
 import '../model/result/result.dart';
 import 'repository.dart';
 

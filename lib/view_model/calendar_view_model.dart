@@ -4,8 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../model/result/result.dart';
-import '../model/todo_model.dart';
-import '../repository/todo_repository.dart';
+import '../model/todos/todo_model.dart';
+import '../repository/repository.dart';
 import '../repository/todo_repository_impl.dart';
 import 'date_view_model.dart';
 
@@ -56,7 +56,7 @@ class CalendarViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
   }
 
   /// todoRepository
-  final TodoRepository todoRepository;
+  final Repository<TodoModel> todoRepository;
 
   /// 1日分のデータを取得する
   Future<Result<List<TodoModel>>> load() async {
