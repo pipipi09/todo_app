@@ -5,6 +5,9 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../model/completed_todos/completed_todo_model.dart';
+import '../model/repeats/repeat_model.dart';
+import '../model/todos/todo_model.dart';
 import '../utils/logger.dart';
 
 class DbController {
@@ -19,6 +22,10 @@ class DbController {
 
   static const dbName = "TodoApp.db";
 
+  static final todosTableName = TodoModel.tableName;
+  static final completedTodosTableName = CompletedTodoModel.tableName;
+  static final repeatsTableName = RepeatModel.tableName;
+
   /// initDB
   /// DataBaseのバージョンが違う場合はtableを作成する
   Future<Database> initDB() async {
@@ -28,7 +35,7 @@ class DbController {
       path,
       version: 2,
       onCreate: _createTable,
-      onUpgrade: _upgradeTabel,
+      onUpgrade: _upgradeTabelV1toV2,
     );
   }
 
@@ -37,7 +44,7 @@ class DbController {
     final batch = db.batch();
     batch.execute('DROP TABLE IF EXISTS $dbName');
     batch.execute(
-      "CREATE TABLE todos("
+      "CREATE TABLE $todosTableName("
       "id TEXT PRIMARY KEY,"
       "text TEXT NOT NULL,"
       "date INTEGER NOT NULL,"
@@ -46,7 +53,7 @@ class DbController {
       ");",
     );
     batch.execute(
-      "CREATE TABLE completed_todos("
+      "CREATE TABLE $completedTodosTableName("
       "id TEXT PRIMARY KEY,"
       "date INTEGER NOT NULL,"
       "todo_id TEXT NOT NULL"
@@ -56,7 +63,7 @@ class DbController {
       ");",
     );
     batch.execute(
-      "CREATE TABLE repeats("
+      "CREATE TABLE $repeatsTableName("
       "id TEXT PRIMARY KEY,"
       "todo_id TEXT NOT NULL"
       "frequency_id TEXT NOT NULL"
@@ -74,12 +81,12 @@ class DbController {
     await batch.commit();
   }
 
-  FutureOr<void> _upgradeTabel(
+  FutureOr<void> _upgradeTabelV1toV2(
     Database db,
     int oldVersion,
     int newVersion,
   ) async {
-    if (oldVersion < newVersion) {
+    if (oldVersion == 1 && newVersion == 2) {
       final batch = db.batch();
       logger.i('database updgrade to $newVersion from $oldVersion');
       batch.execute("DROP TABLE IF EXISTS completed_todos");
@@ -126,7 +133,7 @@ class DbController {
     return db.insert(tableName, json);
   }
 
-  /// tableから全てのデータを取得する
+  /// tableからデータを取得する
   /// [where]は id = ? のような形式にする
   Future<List<Map<String, Object?>>> get({
     required String tableName,

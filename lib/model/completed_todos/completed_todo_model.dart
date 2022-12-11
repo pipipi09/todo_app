@@ -28,4 +28,6 @@ class CompletedTodoModel with _$CompletedTodoModel {
   @override
   factory CompletedTodoModel.fromJson(Map<String, dynamic> json) =>
       _$CompletedTodoModelFromJson(json);
+
+  static String get tableName => 'completed_todos';
 }

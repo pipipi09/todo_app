@@ -59,4 +59,6 @@ class RepeatModel with _$RepeatModel {
   @override
   factory RepeatModel.fromJson(Map<String, dynamic> json) =>
       _$RepeatModelFromJson(json);
+
+  static String get tableName => 'repeats';
 }

@@ -11,6 +11,7 @@ final todoRepositoryProvider =
 class TodoRepositoryImpl implements Repository<TodoModel> {
   TodoRepositoryImpl();
 
+  /// [where]は id = ? のような形式にする
   @override
   Future<Result<List<TodoModel>>> fetch({
     String? where,

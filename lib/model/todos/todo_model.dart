@@ -30,7 +30,7 @@ class TodoModel with _$TodoModel {
   factory TodoModel.fromJson(Map<String, dynamic> json) =>
       _$TodoModelFromJson(json);
 
-  static String get tableName => "todos";
+  static String get tableName => 'todos';
 
   DateTime get dateTime => DateTime.fromMillisecondsSinceEpoch(date ?? 0);
 
