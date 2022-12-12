@@ -141,15 +141,6 @@ class DbController {
     List? whereArgs,
   }) async {
     final db = await database;
-    final version = await db.getVersion();
-    logger.i('now database version is $version');
-    final sqliteSchema = await db.query(
-      'sqlite_schema',
-      where: 'type = ?',
-      whereArgs: ['table'],
-    );
-    logger.i('${sqliteSchema.length}');
-    logger.d('tables \n${sqliteSchema.join(", ")}');
     if (where == null || whereArgs == null) {
       return db.query(tableName);
     }

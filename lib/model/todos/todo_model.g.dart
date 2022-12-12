@@ -10,7 +10,6 @@ _$_TodoModel _$$_TodoModelFromJson(Map<String, dynamic> json) => _$_TodoModel(
       id: json['id'] as String?,
       text: json['text'] as String? ?? '',
       date: json['date'] as int? ?? 0,
-      done: json['done'] as int? ?? 0,
       createdAt: json['created_at'] as int? ?? 0,
       updatedAt: json['updated_at'] as int? ?? 0,
     );
@@ -20,7 +19,6 @@ Map<String, dynamic> _$$_TodoModelToJson(_$_TodoModel instance) =>
       'id': instance.id,
       'text': instance.text,
       'date': instance.date,
-      'done': instance.done,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };

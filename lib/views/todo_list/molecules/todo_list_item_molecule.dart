@@ -7,9 +7,15 @@ import '../../../view_model/todo_view_model.dart';
 import '../organisms/input_todo_organism/input_todo_organism.dart';
 
 class TodoListItemMolecule extends ConsumerWidget {
-  const TodoListItemMolecule({super.key, required this.todo});
+  const TodoListItemMolecule({
+    super.key,
+    required this.todo,
+    this.isCompleted = false,
+  });
 
   final TodoModel todo;
+
+  final bool isCompleted;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,21 +41,21 @@ class TodoListItemMolecule extends ConsumerWidget {
         ],
       ),
       child: ListTile(
-        leading: todo.done == 0
+        leading: !isCompleted
             ? const Icon(Icons.circle_outlined)
             : const Icon(Icons.check_circle_outline_rounded),
         title: Text(
           todo.text!,
           style: TextStyle(
-            color: todo.done == 0 ? Colors.black : Colors.grey,
-            decoration: todo.done == 0 ? null : TextDecoration.lineThrough,
+            color: !isCompleted ? Colors.black : Colors.grey,
+            decoration: !isCompleted ? null : TextDecoration.lineThrough,
           ),
         ),
         onTap: () {
-          final todoDone = todo.done == 0 ? 1 : 0;
-          ref
-              .read(todoListViewModelProvider.notifier)
-              .save(todo.copyWith(done: todoDone));
+          // final todoDone = todo.done == 0 ? 1 : 0;
+          // ref
+          //     .read(todoListViewModelProvider.notifier)
+          //     .save(todo.copyWith(done: todoDone));
         },
         trailing: GestureDetector(
           onTap: () {

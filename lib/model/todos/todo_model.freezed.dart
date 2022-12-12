@@ -29,9 +29,6 @@ mixin _$TodoModel {
   /// Todoを行う日付 UnixTime
   int? get date => throw _privateConstructorUsedError;
 
-  /// 完了したかどうか
-  int? get done => throw _privateConstructorUsedError;
-
   /// 作成日 UnixTime
   @JsonKey(name: 'created_at')
   int? get createdAt => throw _privateConstructorUsedError;
@@ -54,7 +51,6 @@ abstract class $TodoModelCopyWith<$Res> {
       {String? id,
       String? text,
       int? date,
-      int? done,
       @JsonKey(name: 'created_at') int? createdAt,
       @JsonKey(name: 'updated_at') int? updatedAt});
 }
@@ -72,7 +68,6 @@ class _$TodoModelCopyWithImpl<$Res> implements $TodoModelCopyWith<$Res> {
     Object? id = freezed,
     Object? text = freezed,
     Object? date = freezed,
-    Object? done = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -88,10 +83,6 @@ class _$TodoModelCopyWithImpl<$Res> implements $TodoModelCopyWith<$Res> {
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
-              as int?,
-      done: done == freezed
-          ? _value.done
-          : done // ignore: cast_nullable_to_non_nullable
               as int?,
       createdAt: createdAt == freezed
           ? _value.createdAt
@@ -115,7 +106,6 @@ abstract class _$$_TodoModelCopyWith<$Res> implements $TodoModelCopyWith<$Res> {
       {String? id,
       String? text,
       int? date,
-      int? done,
       @JsonKey(name: 'created_at') int? createdAt,
       @JsonKey(name: 'updated_at') int? updatedAt});
 }
@@ -135,7 +125,6 @@ class __$$_TodoModelCopyWithImpl<$Res> extends _$TodoModelCopyWithImpl<$Res>
     Object? id = freezed,
     Object? text = freezed,
     Object? date = freezed,
-    Object? done = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -151,10 +140,6 @@ class __$$_TodoModelCopyWithImpl<$Res> extends _$TodoModelCopyWithImpl<$Res>
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
-              as int?,
-      done: done == freezed
-          ? _value.done
-          : done // ignore: cast_nullable_to_non_nullable
               as int?,
       createdAt: createdAt == freezed
           ? _value.createdAt
@@ -175,7 +160,6 @@ class _$_TodoModel extends _TodoModel {
       {this.id,
       this.text = '',
       this.date = 0,
-      this.done = 0,
       @JsonKey(name: 'created_at') this.createdAt = 0,
       @JsonKey(name: 'updated_at') this.updatedAt = 0})
       : super._();
@@ -197,11 +181,6 @@ class _$_TodoModel extends _TodoModel {
   @JsonKey()
   final int? date;
 
-  /// 完了したかどうか
-  @override
-  @JsonKey()
-  final int? done;
-
   /// 作成日 UnixTime
   @override
   @JsonKey(name: 'created_at')
@@ -214,7 +193,7 @@ class _$_TodoModel extends _TodoModel {
 
   @override
   String toString() {
-    return 'TodoModel(id: $id, text: $text, date: $date, done: $done, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'TodoModel(id: $id, text: $text, date: $date, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -225,7 +204,6 @@ class _$_TodoModel extends _TodoModel {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.text, text) &&
             const DeepCollectionEquality().equals(other.date, date) &&
-            const DeepCollectionEquality().equals(other.done, done) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
   }
@@ -237,7 +215,6 @@ class _$_TodoModel extends _TodoModel {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(text),
       const DeepCollectionEquality().hash(date),
-      const DeepCollectionEquality().hash(done),
       const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(updatedAt));
 
@@ -257,7 +234,6 @@ abstract class _TodoModel extends TodoModel {
       {final String? id,
       final String? text,
       final int? date,
-      final int? done,
       @JsonKey(name: 'created_at') final int? createdAt,
       @JsonKey(name: 'updated_at') final int? updatedAt}) = _$_TodoModel;
   const _TodoModel._() : super._();
@@ -277,10 +253,6 @@ abstract class _TodoModel extends TodoModel {
 
   /// Todoを行う日付 UnixTime
   int? get date => throw _privateConstructorUsedError;
-  @override
-
-  /// 完了したかどうか
-  int? get done => throw _privateConstructorUsedError;
   @override
 
   /// 作成日 UnixTime

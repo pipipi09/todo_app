@@ -5,7 +5,8 @@ import '../model/completed_todos/completed_todo_model.dart';
 import '../model/result/result.dart';
 import 'repository.dart';
 
-final completedRepositoryProvider = Provider<Repository<CompletedTodoModel>>(
+final completedTodoRepositoryProvider =
+    Provider<Repository<CompletedTodoModel>>(
   (ref) => CompletedTodoRepositoryImpl(),
 );
 
