@@ -43,7 +43,7 @@ final calendarViewModelProvider =
     StateNotifierProvider<CalendarViewModel, AsyncValue<List<TodoModel>>>(
   (ref) => CalendarViewModel(
     ref.watch(todoRepositoryProvider),
-    ref.watch(dateViewModelProvider),
+    ref.watch(displayDateViewModelProvider),
   ),
 );
 

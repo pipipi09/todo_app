@@ -8,10 +8,7 @@ import '../molecules/todo_list_item_molecule.dart';
 class TodoListOrganism extends ConsumerWidget {
   const TodoListOrganism({
     super.key,
-    required this.selectedDate,
   });
-
-  final DateTime selectedDate;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

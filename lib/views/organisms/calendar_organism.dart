@@ -12,7 +12,7 @@ class CalendarOrganism extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final date = ref.watch(dateViewModelProvider);
+    final date = ref.watch(displayDateViewModelProvider);
     final todosMap = ref.watch(dayTodoMapProvider);
     var focusedDay = useState<DateTime>(date);
     var selectedDay = useState<DateTime>(date);
@@ -30,7 +30,7 @@ class CalendarOrganism extends HookConsumerWidget {
           selectedDay.value = selected;
           focusedDay.value = focused;
           ref
-              .read(dateViewModelProvider.notifier)
+              .read(displayDateViewModelProvider.notifier)
               .changeDate(selectedDay.value);
           ref
               .read(todoListViewModelProvider.notifier)
@@ -50,25 +50,25 @@ class CalendarOrganism extends HookConsumerWidget {
         markerBuilder:
             (BuildContext context, DateTime day, List<dynamic> events) {
           if (events.isEmpty) return null;
-          if (events.every((todo) => todo.done == 1)) {
-            return Positioned.fill(
-              child: Align(
-                alignment: Alignment.center,
-                child: Opacity(
-                  opacity: 0.5,
-                  child: SizedBox(
-                    child: Center(
-                      child: Icon(
-                        Icons.local_florist,
-                        color: Colors.red[200],
-                        size: 40,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            );
-          }
+          // if (events.every((todo) => todo.done == 1)) {
+          //   return Positioned.fill(
+          //     child: Align(
+          //       alignment: Alignment.center,
+          //       child: Opacity(
+          //         opacity: 0.5,
+          //         child: SizedBox(
+          //           child: Center(
+          //             child: Icon(
+          //               Icons.local_florist,
+          //               color: Colors.red[200],
+          //               size: 40,
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   );
+          // }
           return Positioned.fill(
             child: Align(
               alignment: Alignment.center,

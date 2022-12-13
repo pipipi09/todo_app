@@ -11,18 +11,20 @@ final completedTodoListViewModelProvider = StateNotifierProvider<
     CompletedTodoListViewModel, AsyncValue<List<CompletedTodoModel>>>(
   (ref) => CompletedTodoListViewModel(
     ref.watch(completedTodoRepositoryProvider),
-    ref.watch(dateViewModelProvider),
+    ref.watch(displayDateViewModelProvider),
   ),
 );
 
 class CompletedTodoListViewModel
     extends StateNotifier<AsyncValue<List<CompletedTodoModel>>> {
-  CompletedTodoListViewModel(this.completedTodoRepository, date)
+  CompletedTodoListViewModel(this.completedTodoRepository, this.displayDate)
       : super(const AsyncData([])) {
-    loadByDate(date);
+    loadByDate(displayDate);
   }
 
   final Repository<CompletedTodoModel> completedTodoRepository;
+
+  final DateTime displayDate;
 
   Future<Result<List<CompletedTodoModel>>> loadByDate(DateTime date) async {
     final startOfDate = DateTime(date.year, date.month, date.day);
@@ -57,6 +59,7 @@ class CompletedTodoListViewModel
       final result = await completedTodoRepository.save(saveData);
       return result.when(
         success: (data) {
+          loadByDate(displayDate);
           return Result.success(data: data);
         },
         failure: (error) {
@@ -73,8 +76,7 @@ class CompletedTodoListViewModel
     final result = await completedTodoRepository.delete(completedTodo);
     return result.when(
       success: (data) {
-        final now = DateTime.now();
-        loadByDate(now);
+        loadByDate(displayDate);
         return Result.success(data: data);
       },
       failure: (error) {

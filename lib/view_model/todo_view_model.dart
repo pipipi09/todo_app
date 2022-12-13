@@ -12,7 +12,7 @@ final todoListViewModelProvider =
     StateNotifierProvider<TodoListViewModel, AsyncValue<List<TodoModel>>>(
   (ref) => TodoListViewModel(
     ref.watch(todoRepositoryProvider),
-    ref.watch(dateViewModelProvider),
+    ref.watch(displayDateViewModelProvider),
   ),
 );
 
@@ -20,12 +20,15 @@ final todoListViewModelProvider =
 class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
   /// constructor
   /// インスタンス生成時にloadを実行してデータを取得する
-  TodoListViewModel(this.todoRepository, date) : super(const AsyncData([])) {
-    loadByDate(date);
+  TodoListViewModel(this.todoRepository, this.displayDate)
+      : super(const AsyncData([])) {
+    loadByDate(displayDate);
   }
 
   /// todoRepository
   final Repository<TodoModel> todoRepository;
+
+  final DateTime displayDate;
 
   /// 1日分のデータを取得する
   Future<Result<List<TodoModel>>> loadByDate(DateTime date) async {
@@ -59,6 +62,7 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
       final result = await todoRepository.save(saveData);
       return result.when(
         success: (data) {
+          loadByDate(displayDate);
           return Result.success(data: data);
         },
         failure: (error) {
@@ -70,8 +74,7 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
       final result = await todoRepository.update(todo);
       return result.when(
         success: (data) {
-          final now = DateTime.now();
-          loadByDate(now);
+          loadByDate(displayDate);
           return Result.success(data: data);
         },
         failure: (error) {
@@ -87,8 +90,7 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
     final result = await todoRepository.delete(todo);
     return result.when(
       success: (data) {
-        final now = DateTime.now();
-        loadByDate(now);
+        loadByDate(displayDate);
         return Result.success(data: data);
       },
       failure: (error) {

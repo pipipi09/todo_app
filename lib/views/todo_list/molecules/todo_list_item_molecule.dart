@@ -22,7 +22,7 @@ class TodoListItemMolecule extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final displayingDate = ref.watch(dateViewModelProvider);
+    final displayingDate = ref.watch(displayDateViewModelProvider);
     return Slidable(
       key: UniqueKey(),
       endActionPane: ActionPane(

@@ -12,10 +12,10 @@ class TodoListPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedDate = ref.watch(dateViewModelProvider);
+    final displayDate = ref.watch(displayDateViewModelProvider);
     return Scaffold(
       appBar: AppBarOrganism(
-        date: selectedDate,
+        date: displayDate,
         onPressed: () {
           Navigator.push(
             context,
@@ -25,10 +25,8 @@ class TodoListPage extends HookConsumerWidget {
           );
         },
       ),
-      body: SafeArea(
-        child: TodoListOrganism(
-          selectedDate: selectedDate,
-        ),
+      body: const SafeArea(
+        child: TodoListOrganism(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

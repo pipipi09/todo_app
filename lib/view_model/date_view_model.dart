@@ -1,11 +1,12 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final dateViewModelProvider = StateNotifierProvider<DateViewModel, DateTime>(
-  (ref) => DateViewModel(),
+final displayDateViewModelProvider =
+    StateNotifierProvider<DisplayDateViewModel, DateTime>(
+  (ref) => DisplayDateViewModel(),
 );
 
-class DateViewModel extends StateNotifier<DateTime> {
-  DateViewModel() : super(DateTime.now());
+class DisplayDateViewModel extends StateNotifier<DateTime> {
+  DisplayDateViewModel() : super(DateTime.now());
 
   void changeDate(DateTime date) {
     state = date;

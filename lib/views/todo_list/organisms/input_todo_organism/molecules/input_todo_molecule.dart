@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../model/todos/todo_model.dart';
+import '../../../../../view_model/date_view_model.dart';
 import '../../../../../view_model/todo_view_model.dart';
 import '../atoms/submit_btn_atom.dart';
 import '../atoms/text_field_atom.dart';
@@ -68,8 +69,8 @@ class InputTodoMolecule extends HookConsumerWidget {
 
             if (result.isSuccess) {
               ref
-                  .read(todoListViewModelProvider.notifier)
-                  .loadByDate(editTodo.value.dateTime);
+                  .read(displayDateViewModelProvider.notifier)
+                  .changeDate(editTodo.value.dateTime);
 
               final mounted =
                   ref.read(todoListViewModelProvider.notifier).mounted;
