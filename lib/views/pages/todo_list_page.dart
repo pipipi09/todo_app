@@ -36,8 +36,7 @@ class TodoListPage extends HookConsumerWidget {
             context: context,
             builder: (BuildContext context) {
               return InputTodoOrganism(
-                editTodo:
-                    TodoModel(date: DateTime.now().millisecondsSinceEpoch),
+                editTodo: TodoModel(date: displayDate.millisecondsSinceEpoch),
               );
             },
           );
