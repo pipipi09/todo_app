@@ -135,6 +135,7 @@ class DbController {
 
   /// tableからデータを取得する
   /// [where]は id = ? のような形式にする
+  /// [where]もしくは[whereArgs]がnullの場合は全件取得する
   Future<List<Map<String, Object?>>> get({
     required String tableName,
     String? where,

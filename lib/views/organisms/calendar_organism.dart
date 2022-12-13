@@ -3,7 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../view_model/calendar_view_model.dart';
+import '../../view_model/calendar_completed_todo_view_model.dart';
+import '../../view_model/calendar_todo_view_model.dart';
 import '../../view_model/date_view_model.dart';
 import '../../view_model/todo_view_model.dart';
 
@@ -14,6 +15,7 @@ class CalendarOrganism extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final date = ref.watch(displayDateViewModelProvider);
     final todosMap = ref.watch(dayTodoMapProvider);
+    final completedTodosMap = ref.watch(dayCompletedTodoMapProvider);
     var focusedDay = useState<DateTime>(date);
     var selectedDay = useState<DateTime>(date);
     return TableCalendar(
@@ -50,25 +52,27 @@ class CalendarOrganism extends HookConsumerWidget {
         markerBuilder:
             (BuildContext context, DateTime day, List<dynamic> events) {
           if (events.isEmpty) return null;
-          // if (events.every((todo) => todo.done == 1)) {
-          //   return Positioned.fill(
-          //     child: Align(
-          //       alignment: Alignment.center,
-          //       child: Opacity(
-          //         opacity: 0.5,
-          //         child: SizedBox(
-          //           child: Center(
-          //             child: Icon(
-          //               Icons.local_florist,
-          //               color: Colors.red[200],
-          //               size: 40,
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   );
-          // }
+          final completed = completedTodosMap[day];
+          if (completed != null &&
+              events.every((todo) => completed.contains(todo.id!))) {
+            return Positioned.fill(
+              child: Align(
+                alignment: Alignment.center,
+                child: Opacity(
+                  opacity: 0.5,
+                  child: SizedBox(
+                    child: Center(
+                      child: Icon(
+                        Icons.local_florist,
+                        color: Colors.red[200],
+                        size: 40,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
           return Positioned.fill(
             child: Align(
               alignment: Alignment.center,

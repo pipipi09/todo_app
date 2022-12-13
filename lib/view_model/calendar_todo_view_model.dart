@@ -7,7 +7,6 @@ import '../model/result/result.dart';
 import '../model/todos/todo_model.dart';
 import '../repository/repository.dart';
 import '../repository/todo_repository_impl.dart';
-import 'date_view_model.dart';
 
 /// Todoリストを日付ごとのMapにする
 ///
@@ -17,7 +16,7 @@ final dayTodoMapProvider =
     Provider.autoDispose<LinkedHashMap<DateTime, List<TodoModel>>>(
   (ref) {
     final todos =
-        ref.watch(calendarViewModelProvider).valueOrNull ?? <TodoModel>[];
+        ref.watch(calendarTodoViewModelProvider).valueOrNull ?? <TodoModel>[];
     final mapedTodos =
         todos.fold<Map<DateTime, List<TodoModel>>>({}, (acc, todo) {
       final day =
@@ -39,26 +38,25 @@ final dayTodoMapProvider =
 );
 
 /// Todoリストを取得し配布する
-final calendarViewModelProvider =
-    StateNotifierProvider<CalendarViewModel, AsyncValue<List<TodoModel>>>(
-  (ref) => CalendarViewModel(
+final calendarTodoViewModelProvider = StateNotifierProvider.autoDispose<
+    CalendarTodoViewModel, AsyncValue<List<TodoModel>>>(
+  (ref) => CalendarTodoViewModel(
     ref.watch(todoRepositoryProvider),
-    ref.watch(displayDateViewModelProvider),
   ),
 );
 
 /// カレンダーが持つtodoデータ
-class CalendarViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
+class CalendarTodoViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
   /// constructor
   /// インスタンス生成時にloadを実行してデータを取得する
-  CalendarViewModel(this.todoRepository, date) : super(const AsyncData([])) {
+  CalendarTodoViewModel(this.todoRepository) : super(const AsyncData([])) {
     load();
   }
 
   /// todoRepository
   final Repository<TodoModel> todoRepository;
 
-  /// 1日分のデータを取得する
+  /// 全件取得する
   Future<Result<List<TodoModel>>> load() async {
     final result = await todoRepository.fetch();
     return result.when(

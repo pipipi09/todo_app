@@ -62,7 +62,7 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
       final result = await todoRepository.save(saveData);
       return result.when(
         success: (data) {
-          loadByDate(displayDate);
+          loadByDate(saveData.dateTime);
           return Result.success(data: data);
         },
         failure: (error) {
@@ -74,7 +74,7 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
       final result = await todoRepository.update(todo);
       return result.when(
         success: (data) {
-          loadByDate(displayDate);
+          loadByDate(todo.dateTime);
           return Result.success(data: data);
         },
         failure: (error) {
@@ -90,7 +90,7 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
     final result = await todoRepository.delete(todo);
     return result.when(
       success: (data) {
-        loadByDate(displayDate);
+        loadByDate(todo.dateTime);
         return Result.success(data: data);
       },
       failure: (error) {

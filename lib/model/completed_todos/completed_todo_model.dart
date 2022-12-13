@@ -30,4 +30,6 @@ class CompletedTodoModel with _$CompletedTodoModel {
       _$CompletedTodoModelFromJson(json);
 
   static String get tableName => 'completed_todos';
+
+  DateTime get dateTime => DateTime.fromMillisecondsSinceEpoch(date);
 }

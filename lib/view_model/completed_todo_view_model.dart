@@ -59,7 +59,7 @@ class CompletedTodoListViewModel
       final result = await completedTodoRepository.save(saveData);
       return result.when(
         success: (data) {
-          loadByDate(displayDate);
+          loadByDate(saveData.dateTime);
           return Result.success(data: data);
         },
         failure: (error) {
@@ -76,7 +76,7 @@ class CompletedTodoListViewModel
     final result = await completedTodoRepository.delete(completedTodo);
     return result.when(
       success: (data) {
-        loadByDate(displayDate);
+        loadByDate(completedTodo.dateTime);
         return Result.success(data: data);
       },
       failure: (error) {

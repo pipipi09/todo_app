@@ -70,10 +70,6 @@ class TodoListItemMolecule extends ConsumerWidget {
                 .read(completedTodoListViewModelProvider.notifier)
                 .delete(completed!);
           }
-          // final todoDone = todo.done == 0 ? 1 : 0;
-          // ref
-          //     .read(todoListViewModelProvider.notifier)
-          //     .save(todo.copyWith(done: todoDone));
         },
         trailing: GestureDetector(
           onTap: () {
