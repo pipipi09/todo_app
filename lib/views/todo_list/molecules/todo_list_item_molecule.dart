@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../model/completed_todos/completed_todo_model.dart';
 import '../../../model/todos/todo_model.dart';
+import '../../../view_model/completed_todo_view_model.dart';
+import '../../../view_model/date_view_model.dart';
 import '../../../view_model/todo_view_model.dart';
 import '../organisms/input_todo_organism/input_todo_organism.dart';
 
@@ -10,15 +13,16 @@ class TodoListItemMolecule extends ConsumerWidget {
   const TodoListItemMolecule({
     super.key,
     required this.todo,
-    this.isCompleted = false,
+    this.completed,
   });
 
   final TodoModel todo;
 
-  final bool isCompleted;
+  final CompletedTodoModel? completed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final displayingDate = ref.watch(dateViewModelProvider);
     return Slidable(
       key: UniqueKey(),
       endActionPane: ActionPane(
@@ -41,17 +45,31 @@ class TodoListItemMolecule extends ConsumerWidget {
         ],
       ),
       child: ListTile(
-        leading: !isCompleted
+        leading: completed == null
             ? const Icon(Icons.circle_outlined)
             : const Icon(Icons.check_circle_outline_rounded),
         title: Text(
           todo.text!,
           style: TextStyle(
-            color: !isCompleted ? Colors.black : Colors.grey,
-            decoration: !isCompleted ? null : TextDecoration.lineThrough,
+            color: completed == null ? Colors.black : Colors.grey,
+            decoration: completed == null ? null : TextDecoration.lineThrough,
           ),
         ),
         onTap: () {
+          if (completed == null) {
+            if (todo.id == null || todo.id == '') return;
+            final completedTodo = CompletedTodoModel(
+              date: todo.date ?? displayingDate.millisecondsSinceEpoch,
+              todoId: todo.id!,
+            );
+            ref
+                .read(completedTodoListViewModelProvider.notifier)
+                .save(completedTodo);
+          } else {
+            ref
+                .read(completedTodoListViewModelProvider.notifier)
+                .delete(completed!);
+          }
           // final todoDone = todo.done == 0 ? 1 : 0;
           // ref
           //     .read(todoListViewModelProvider.notifier)

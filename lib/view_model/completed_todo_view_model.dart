@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:uuid/uuid.dart';
 
 import '../model/completed_todos/completed_todo_model.dart';
 import '../model/result/result.dart';
@@ -36,6 +37,44 @@ class CompletedTodoListViewModel
     return result.when(
       success: (data) {
         state = AsyncValue.data(data);
+        return Result.success(data: data);
+      },
+      failure: (error) {
+        state = AsyncValue.error(error);
+        return Result.failure(error: error);
+      },
+    );
+  }
+
+  /// [completedTodo]を保存する
+  Future<Result<int>> save(CompletedTodoModel completedTodo) async {
+    const uuid = Uuid();
+    if (completedTodo.id == null) {
+      final saveData = completedTodo.copyWith(
+        id: uuid.v4(),
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+      );
+      final result = await completedTodoRepository.save(saveData);
+      return result.when(
+        success: (data) {
+          return Result.success(data: data);
+        },
+        failure: (error) {
+          state = AsyncValue.error(error);
+          return Result.failure(error: error);
+        },
+      );
+    }
+    throw const FormatException('completedTodo already has an id.');
+  }
+
+  /// [completedTodo]で指定したデータを削除する
+  Future<Result<int>> delete(CompletedTodoModel completedTodo) async {
+    final result = await completedTodoRepository.delete(completedTodo);
+    return result.when(
+      success: (data) {
+        final now = DateTime.now();
+        loadByDate(now);
         return Result.success(data: data);
       },
       failure: (error) {

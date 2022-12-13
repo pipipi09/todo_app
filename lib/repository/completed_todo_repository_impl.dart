@@ -29,15 +29,23 @@ class CompletedTodoRepositoryImpl implements Repository<CompletedTodoModel> {
   }
 
   @override
-  Future<Result<int>> delete(CompletedTodoModel model) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<Result<int>> delete(CompletedTodoModel completedTodo) {
+    return Result.guardFuture(
+      () async => await DbController.db.delete(
+        tableName: CompletedTodoModel.tableName,
+        primaryKey: completedTodo.id!,
+      ),
+    );
   }
 
   @override
-  Future<Result<int>> save(CompletedTodoModel model) {
-    // TODO: implement save
-    throw UnimplementedError();
+  Future<Result<int>> save(CompletedTodoModel completedTodo) {
+    return Result.guardFuture(
+      () async => await DbController.db.create(
+        tableName: CompletedTodoModel.tableName,
+        json: completedTodo.toJson(),
+      ),
+    );
   }
 
   @override

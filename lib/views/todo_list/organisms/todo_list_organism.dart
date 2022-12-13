@@ -22,10 +22,12 @@ class TodoListOrganism extends ConsumerWidget {
       itemCount: todos.length,
       itemBuilder: (context, index) {
         final todo = todos[index];
-        final isCompleted = completedTodos
-            .where((completedTodo) => completedTodo.todoId == todo.id)
-            .isNotEmpty;
-        return TodoListItemMolecule(todo: todo, isCompleted: isCompleted);
+        final completed = completedTodos
+            .where((completedTodo) => completedTodo.todoId == todo.id);
+        return TodoListItemMolecule(
+          todo: todo,
+          completed: completed.isNotEmpty ? completed.first : null,
+        );
       },
     );
   }
