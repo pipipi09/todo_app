@@ -35,8 +35,8 @@ class CalendarOrganism extends HookConsumerWidget {
               .read(displayDateViewModelProvider.notifier)
               .changeDate(selectedDay.value);
           ref
-              .read(todoListViewModelProvider.notifier)
-              .loadByDate(selectedDay.value);
+              .read(todoListViewModelProvider(selectedDay.value).notifier)
+              .loadByDate();
         }
       },
       eventLoader: (day) {

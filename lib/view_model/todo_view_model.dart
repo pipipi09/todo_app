@@ -5,14 +5,13 @@ import '../model/result/result.dart';
 import '../model/todos/todo_model.dart';
 import '../repository/repository.dart';
 import '../repository/todo_repository_impl.dart';
-import 'date_view_model.dart';
 
 /// Todoリストを取得し配布する
-final todoListViewModelProvider =
-    StateNotifierProvider<TodoListViewModel, AsyncValue<List<TodoModel>>>(
-  (ref) => TodoListViewModel(
+final todoListViewModelProvider = StateNotifierProvider.family<
+    TodoListViewModel, AsyncValue<List<TodoModel>>, DateTime>(
+  (ref, date) => TodoListViewModel(
     ref.watch(todoRepositoryProvider),
-    ref.watch(displayDateViewModelProvider),
+    date,
   ),
 );
 
@@ -20,18 +19,18 @@ final todoListViewModelProvider =
 class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
   /// constructor
   /// インスタンス生成時にloadを実行してデータを取得する
-  TodoListViewModel(this.todoRepository, this.displayDate)
+  TodoListViewModel(this.todoRepository, this.date)
       : super(const AsyncData([])) {
-    loadByDate(displayDate);
+    loadByDate();
   }
 
   /// todoRepository
   final Repository<TodoModel> todoRepository;
 
-  final DateTime displayDate;
+  final DateTime date;
 
   /// 1日分のデータを取得する
-  Future<Result<List<TodoModel>>> loadByDate(DateTime date) async {
+  Future<Result<List<TodoModel>>> loadByDate() async {
     final startOfDate = DateTime(date.year, date.month, date.day);
     final endOfDate = DateTime(date.year, date.month, date.day, 23, 59);
     const where = "date between ? and ?";
@@ -62,7 +61,7 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
       final result = await todoRepository.save(saveData);
       return result.when(
         success: (data) {
-          loadByDate(saveData.dateTime);
+          loadByDate();
           return Result.success(data: data);
         },
         failure: (error) {
@@ -74,7 +73,7 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
       final result = await todoRepository.update(todo);
       return result.when(
         success: (data) {
-          loadByDate(todo.dateTime);
+          loadByDate();
           return Result.success(data: data);
         },
         failure: (error) {
@@ -90,7 +89,7 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
     final result = await todoRepository.delete(todo);
     return result.when(
       success: (data) {
-        loadByDate(todo.dateTime);
+        loadByDate();
         return Result.success(data: data);
       },
       failure: (error) {

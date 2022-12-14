@@ -9,6 +9,7 @@ import '../../../view_model/date_view_model.dart';
 import '../../../view_model/todo_view_model.dart';
 import '../organisms/input_todo_organism/input_todo_organism.dart';
 
+/// Todoリストのアイテム
 class TodoListItemMolecule extends ConsumerWidget {
   const TodoListItemMolecule({
     super.key,
@@ -22,20 +23,24 @@ class TodoListItemMolecule extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final displayingDate = ref.watch(displayDateViewModelProvider);
+    final displayDate = ref.watch(displayDateViewModelProvider);
     return Slidable(
       key: UniqueKey(),
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
         dismissible: DismissiblePane(
           onDismissed: () {
-            ref.read(todoListViewModelProvider.notifier).delete(todo);
+            ref
+                .read(todoListViewModelProvider(displayDate).notifier)
+                .delete(todo);
           },
         ),
         children: [
           SlidableAction(
             onPressed: (context) {
-              ref.read(todoListViewModelProvider.notifier).delete(todo);
+              ref
+                  .read(todoListViewModelProvider(displayDate).notifier)
+                  .delete(todo);
             },
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
@@ -59,7 +64,7 @@ class TodoListItemMolecule extends ConsumerWidget {
           if (completed == null) {
             if (todo.id == null || todo.id == '') return;
             final completedTodo = CompletedTodoModel(
-              date: todo.date ?? displayingDate.millisecondsSinceEpoch,
+              date: todo.date ?? displayDate.millisecondsSinceEpoch,
               todoId: todo.id!,
             );
             ref

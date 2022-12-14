@@ -1,11 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../../const/frequencies.dart';
 import '../../../../../model/todos/todo_model.dart';
 import '../../../../../view_model/date_view_model.dart';
 import '../../../../../view_model/todo_view_model.dart';
+import '../../../../molecules/cupertino_picker_molecule.dart';
 import '../atoms/submit_btn_atom.dart';
 import '../atoms/text_field_atom.dart';
 
@@ -14,18 +15,10 @@ class InputTodoMolecule extends HookConsumerWidget {
 
   final TodoModel todo;
 
-  static const repeatItems = [
-    'no repeat',
-    'every day',
-    'every week',
-    'every month',
-    'every year',
-  ];
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var editTodo = useState(todo.copyWith());
-    var repeatStatus = useState(repeatItems[0]);
+    var repeatStatus = useState(frequencies[0]);
     final textEditingController =
         TextEditingController(text: editTodo.value.text);
 
@@ -78,28 +71,11 @@ class InputTodoMolecule extends HookConsumerWidget {
                     showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
-                        return SizedBox(
-                          height: MediaQuery.of(context).size.height / 3,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: CupertinoPicker(
-                              itemExtent: 40,
-                              children: repeatItems
-                                  .map(
-                                    (item) => Center(
-                                      child: Text(
-                                        item,
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                              onSelectedItemChanged: (int index) {
-                                repeatStatus.value = repeatItems[index];
-                              },
-                            ),
-                          ),
+                        return CupertinoPickerMolecule(
+                          items: frequencies,
+                          onSelectedItemChanged: (int index) {
+                            repeatStatus.value = frequencies[index];
+                          },
                         );
                       },
                     );
@@ -120,7 +96,9 @@ class InputTodoMolecule extends HookConsumerWidget {
                 editTodo.value.copyWith(text: textEditingController.text);
 
             final result = await ref
-                .read(todoListViewModelProvider.notifier)
+                .read(
+                  todoListViewModelProvider(editTodo.value.dateTime).notifier,
+                )
                 .save(editTodo.value);
 
             if (result.isSuccess) {
@@ -128,8 +106,11 @@ class InputTodoMolecule extends HookConsumerWidget {
                   .read(displayDateViewModelProvider.notifier)
                   .changeDate(editTodo.value.dateTime);
 
-              final mounted =
-                  ref.read(todoListViewModelProvider.notifier).mounted;
+              final mounted = ref
+                  .read(
+                    todoListViewModelProvider(editTodo.value.dateTime).notifier,
+                  )
+                  .mounted;
 
               if (mounted) Navigator.pop(context);
             }
