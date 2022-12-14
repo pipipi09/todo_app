@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -13,9 +14,18 @@ class InputTodoMolecule extends HookConsumerWidget {
 
   final TodoModel todo;
 
+  static const repeatItems = [
+    'no repeat',
+    'every day',
+    'every week',
+    'every month',
+    'every year',
+  ];
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var editTodo = useState(todo.copyWith());
+    var repeatStatus = useState(repeatItems[0]);
     final textEditingController =
         TextEditingController(text: editTodo.value.text);
 
@@ -32,7 +42,7 @@ class InputTodoMolecule extends HookConsumerWidget {
             const Text('Date'),
             Row(
               children: [
-                Text('${editTodo.value.formatDate}'),
+                Text(editTodo.value.formatDate),
                 IconButton(
                   onPressed: () async {
                     final DateTime? pickedDate = await showDatePicker(
@@ -50,6 +60,52 @@ class InputTodoMolecule extends HookConsumerWidget {
                   },
                   icon: const Icon(
                     Icons.calendar_month_rounded,
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Repeat'),
+            Row(
+              children: [
+                Text(repeatStatus.value),
+                IconButton(
+                  onPressed: () async {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height / 3,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: CupertinoPicker(
+                              itemExtent: 40,
+                              children: repeatItems
+                                  .map(
+                                    (item) => Center(
+                                      child: Text(
+                                        item,
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                              onSelectedItemChanged: (int index) {
+                                repeatStatus.value = repeatItems[index];
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.repeat_rounded,
                   ),
                 )
               ],
