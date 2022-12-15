@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../view_model/completed_todo_view_model.dart';
-import '../../../view_model/date_view_model.dart';
 import '../../../view_model/todo_view_model.dart';
 import '../molecules/todo_list_item_molecule.dart';
 
@@ -13,9 +12,7 @@ class TodoListOrganism extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final displayDate = ref.watch(displayDateViewModelProvider);
-    final todos =
-        ref.watch(todoListViewModelProvider(displayDate)).valueOrNull ?? [];
+    final todos = ref.watch(todoListViewModelProvider).valueOrNull ?? [];
     final completedTodos =
         ref.watch(completedTodoListViewModelProvider).valueOrNull ?? [];
     return ListView.builder(

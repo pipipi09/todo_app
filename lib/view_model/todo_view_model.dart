@@ -5,13 +5,14 @@ import '../model/result/result.dart';
 import '../model/todos/todo_model.dart';
 import '../repository/repository.dart';
 import '../repository/todo_repository_impl.dart';
+import 'date_view_model.dart';
 
 /// Todoリストを取得し配布する
-final todoListViewModelProvider = StateNotifierProvider.family<
-    TodoListViewModel, AsyncValue<List<TodoModel>>, DateTime>(
-  (ref, date) => TodoListViewModel(
+final todoListViewModelProvider =
+    StateNotifierProvider<TodoListViewModel, AsyncValue<List<TodoModel>>>(
+  (ref) => TodoListViewModel(
     ref.watch(todoRepositoryProvider),
-    date,
+    ref.watch(displayDateViewModelProvider),
   ),
 );
 
@@ -19,18 +20,18 @@ final todoListViewModelProvider = StateNotifierProvider.family<
 class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
   /// constructor
   /// インスタンス生成時にloadを実行してデータを取得する
-  TodoListViewModel(this.todoRepository, this.date)
+  TodoListViewModel(this.todoRepository, this.displayDate)
       : super(const AsyncData([])) {
-    loadByDate();
+    loadByDate(displayDate);
   }
 
   /// todoRepository
   final Repository<TodoModel> todoRepository;
 
-  final DateTime date;
+  final DateTime displayDate;
 
   /// 1日分のデータを取得する
-  Future<Result<List<TodoModel>>> loadByDate() async {
+  Future<Result<List<TodoModel>>> loadByDate(DateTime date) async {
     final startOfDate = DateTime(date.year, date.month, date.day);
     final endOfDate = DateTime(date.year, date.month, date.day, 23, 59);
     const where = "date between ? and ?";
@@ -54,15 +55,15 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
 
   /// [todo]を保存する
   /// primary keyがなければsave, あればupdateをする
-  Future<Result<int>> save(TodoModel todo) async {
+  Future<Result<String>> save(TodoModel todo) async {
     const uuid = Uuid();
     if (todo.id == null) {
       final saveData = todo.copyWith(id: uuid.v4());
       final result = await todoRepository.save(saveData);
       return result.when(
         success: (data) {
-          loadByDate();
-          return Result.success(data: data);
+          loadByDate(saveData.dateTime);
+          return Result.success(data: saveData.id!);
         },
         failure: (error) {
           state = AsyncValue.error(error);
@@ -73,8 +74,8 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
       final result = await todoRepository.update(todo);
       return result.when(
         success: (data) {
-          loadByDate();
-          return Result.success(data: data);
+          loadByDate(todo.dateTime);
+          return Result.success(data: todo.id!);
         },
         failure: (error) {
           state = AsyncValue.error(error);
@@ -89,7 +90,7 @@ class TodoListViewModel extends StateNotifier<AsyncValue<List<TodoModel>>> {
     final result = await todoRepository.delete(todo);
     return result.when(
       success: (data) {
-        loadByDate();
+        loadByDate(todo.dateTime);
         return Result.success(data: data);
       },
       failure: (error) {

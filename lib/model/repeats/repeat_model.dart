@@ -3,6 +3,25 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'repeat_model.freezed.dart';
 part 'repeat_model.g.dart';
 
+enum Frequency {
+  noRepeat,
+  everyDay,
+  everyWeek,
+  everyMonth,
+  everyYear,
+}
+
+extension FrequenciesExtention on Frequency {
+  static final names = {
+    Frequency.noRepeat: 'no repeat',
+    Frequency.everyDay: 'every day',
+    Frequency.everyWeek: 'every week',
+    Frequency.everyMonth: 'every month',
+    Frequency.everyYear: 'every year',
+  };
+  String get typeName => names[this]!;
+}
+
 @freezed
 class RepeatModel with _$RepeatModel {
   const factory RepeatModel({
@@ -13,10 +32,7 @@ class RepeatModel with _$RepeatModel {
     @JsonKey(name: 'todo_id') required String todoId,
 
     /// 繰り返しの頻度
-    /// everyday  = 1
-    /// everyweek  = 2
-    /// everymonth = 3
-    /// everyyear  = 4
+    /// Frequency
     @JsonKey(name: 'frequency_id') required String frequencyId,
 
     /// 繰り返しを行う時間

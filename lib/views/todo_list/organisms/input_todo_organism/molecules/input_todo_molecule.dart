@@ -3,8 +3,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../const/frequencies.dart';
+import '../../../../../model/repeats/repeat_model.dart';
 import '../../../../../model/todos/todo_model.dart';
+import '../../../../../utils/logger.dart';
 import '../../../../../view_model/date_view_model.dart';
+import '../../../../../view_model/repeat_view_model.dart';
 import '../../../../../view_model/todo_view_model.dart';
 import '../../../../molecules/cupertino_picker_molecule.dart';
 import '../atoms/submit_btn_atom.dart';
@@ -72,7 +75,8 @@ class InputTodoMolecule extends HookConsumerWidget {
                       context: context,
                       builder: (BuildContext context) {
                         return CupertinoPickerMolecule(
-                          items: frequencies,
+                          items:
+                              Frequency.values.map((e) => e.typeName).toList(),
                           onSelectedItemChanged: (int index) {
                             repeatStatus.value = frequencies[index];
                           },
@@ -95,24 +99,37 @@ class InputTodoMolecule extends HookConsumerWidget {
             editTodo.value =
                 editTodo.value.copyWith(text: textEditingController.text);
 
-            final result = await ref
+            final todoResult = await ref
                 .read(
-                  todoListViewModelProvider(editTodo.value.dateTime).notifier,
+                  todoListViewModelProvider.notifier,
                 )
                 .save(editTodo.value);
 
-            if (result.isSuccess) {
+            todoResult.when(success: (todoId) {
+              if (repeatStatus.value != Frequency.noRepeat.typeName) {
+                final repeat = RepeatModel(
+                  todoId: todoId,
+                  frequencyId: repeatStatus.value,
+                );
+                ref.read(repeatViewModelProvider.notifier).save(repeat);
+              }
               ref
                   .read(displayDateViewModelProvider.notifier)
                   .changeDate(editTodo.value.dateTime);
 
               final mounted = ref
                   .read(
-                    todoListViewModelProvider(editTodo.value.dateTime).notifier,
+                    todoListViewModelProvider.notifier,
                   )
                   .mounted;
 
               if (mounted) Navigator.pop(context);
+            }, failure: (e) {
+              logger.e(e);
+            });
+
+            if (todoResult.isSuccess) {
+              //
             }
           },
         ),

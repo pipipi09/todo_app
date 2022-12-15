@@ -28,10 +28,7 @@ mixin _$RepeatModel {
   String get todoId => throw _privateConstructorUsedError;
 
   /// 繰り返しの頻度
-  /// everyday  = 1
-  /// everyweek  = 2
-  /// everymonth = 3
-  /// everyyear  = 4
+  /// Frequency
   @JsonKey(name: 'frequency_id')
   String get frequencyId => throw _privateConstructorUsedError;
 
@@ -290,10 +287,7 @@ class _$_RepeatModel extends _RepeatModel {
   final String todoId;
 
   /// 繰り返しの頻度
-  /// everyday  = 1
-  /// everyweek  = 2
-  /// everymonth = 3
-  /// everyyear  = 4
+  /// Frequency
   @override
   @JsonKey(name: 'frequency_id')
   final String frequencyId;
@@ -428,10 +422,7 @@ abstract class _RepeatModel extends RepeatModel {
   @override
 
   /// 繰り返しの頻度
-  /// everyday  = 1
-  /// everyweek  = 2
-  /// everymonth = 3
-  /// everyyear  = 4
+  /// Frequency
   @JsonKey(name: 'frequency_id')
   String get frequencyId => throw _privateConstructorUsedError;
   @override

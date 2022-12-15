@@ -30,17 +30,13 @@ class TodoListItemMolecule extends ConsumerWidget {
         motion: const ScrollMotion(),
         dismissible: DismissiblePane(
           onDismissed: () {
-            ref
-                .read(todoListViewModelProvider(displayDate).notifier)
-                .delete(todo);
+            ref.read(todoListViewModelProvider.notifier).delete(todo);
           },
         ),
         children: [
           SlidableAction(
             onPressed: (context) {
-              ref
-                  .read(todoListViewModelProvider(displayDate).notifier)
-                  .delete(todo);
+              ref.read(todoListViewModelProvider.notifier).delete(todo);
             },
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,

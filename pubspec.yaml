@@ -40,6 +40,7 @@ dependencies:
   intl: ^0.17.0
   table_calendar: ^3.0.8
   logger: ^1.1.0
+  collection: ^1.16.0
 
 dev_dependencies:
   build_runner:
