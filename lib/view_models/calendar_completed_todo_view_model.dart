@@ -5,8 +5,8 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../models/completed_todos/completed_todo_model.dart';
 import '../models/result/result.dart';
-import '../repository/completed_todo_repository_impl.dart';
-import '../repository/repository.dart';
+import '../repositories/completed_todo_repository_impl.dart';
+import '../repositories/repository.dart';
 
 /// CompletedTodoリストを日付ごとのMapにする
 ///

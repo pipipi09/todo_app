@@ -11,6 +11,8 @@ class CalendarAppBarOrganism extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return AppBar();
+    return AppBar(
+      backgroundColor: Colors.brown.shade200,
+    );
   }
 }

@@ -91,7 +91,7 @@ class DbController {
       logger.i('database updgrade to $newVersion from $oldVersion');
       batch.execute("DROP TABLE IF EXISTS completed_todos");
       batch.execute(
-        "CREATE TABLE completed_todos("
+        "CREATE TABLE $completedTodosTableName("
         "id TEXT PRIMARY KEY,"
         "date INTEGER NOT NULL,"
         "todo_id TEXT NOT NULL,"
@@ -102,7 +102,7 @@ class DbController {
       );
       batch.execute("DROP TABLE IF EXISTS repeats");
       batch.execute(
-        "CREATE TABLE repeats("
+        "CREATE TABLE $repeatsTableName("
         "id TEXT PRIMARY KEY,"
         "todo_id TEXT NOT NULL,"
         "frequency_id TEXT NOT NULL,"

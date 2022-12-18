@@ -18,18 +18,15 @@ class AppBarOrganism extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: Colors.brown.shade200,
       title: Text(
         DateFormat('yyyy/MM/dd').format(date),
-        style: const TextStyle(
-          color: Colors.white,
-        ),
       ),
       actions: [
         IconButton(
           onPressed: onPressed,
           icon: const Icon(
             Icons.calendar_month_rounded,
-            color: Colors.white,
           ),
         )
       ],

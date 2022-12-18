@@ -4,9 +4,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../models/completed_todos/completed_todo_model.dart';
 import '../../../models/todos/todo_model.dart';
-import '../../../view_model/completed_todo_view_model.dart';
-import '../../../view_model/date_view_model.dart';
-import '../../../view_model/todo_view_model.dart';
+import '../../../view_models/completed_todo_view_model.dart';
+import '../../../view_models/date_view_model.dart';
+import '../../../view_models/todo_view_model.dart';
 import '../organisms/input_todo_organism/input_todo_organism.dart';
 
 class TodoListItemMolecule extends ConsumerWidget {

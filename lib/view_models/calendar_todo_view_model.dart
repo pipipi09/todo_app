@@ -5,8 +5,8 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../models/result/result.dart';
 import '../models/todos/todo_model.dart';
-import '../repository/repository.dart';
-import '../repository/todo_repository_impl.dart';
+import '../repositories/repository.dart';
+import '../repositories/todo_repository_impl.dart';
 
 /// Todoリストを日付ごとのMapにする
 ///
