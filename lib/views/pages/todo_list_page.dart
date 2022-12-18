@@ -7,8 +7,30 @@ import '../todo_list/organisms/input_todo_organism/input_todo_organism.dart';
 import '../todo_list/organisms/todo_list_organism.dart';
 import 'calendar_page.dart';
 
-class TodoListPage extends HookConsumerWidget {
+class TodoListPage extends ConsumerWidget {
   const TodoListPage({super.key});
+
+  void _gotoCalendarPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const CalendarPage(),
+      ),
+    );
+  }
+
+  void _showModalForCreateTodo(BuildContext context, {required DateTime date}) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return InputTodoOrganism(
+          editTodo: TodoModel(date: date.millisecondsSinceEpoch),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,12 +39,7 @@ class TodoListPage extends HookConsumerWidget {
       appBar: AppBarOrganism(
         date: displayDate,
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const CalendarPage(),
-            ),
-          );
+          _gotoCalendarPage(context);
         },
       ),
       body: const SafeArea(
@@ -30,16 +47,7 @@ class TodoListPage extends HookConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showModalBottomSheet(
-            backgroundColor: Colors.transparent,
-            isScrollControlled: true,
-            context: context,
-            builder: (BuildContext context) {
-              return InputTodoOrganism(
-                editTodo: TodoModel(date: displayDate.millisecondsSinceEpoch),
-              );
-            },
-          );
+          _showModalForCreateTodo(context, date: displayDate);
         },
         child: const Icon(
           Icons.add,
