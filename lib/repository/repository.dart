@@ -1,4 +1,4 @@
-import '../model/result/result.dart';
+import '../models/result/result.dart';
 
 abstract class Repository<T> {
   Future<Result<List<T>>> fetch({

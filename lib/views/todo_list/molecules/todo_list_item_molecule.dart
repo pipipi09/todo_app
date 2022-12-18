@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../model/completed_todos/completed_todo_model.dart';
-import '../../../model/todos/todo_model.dart';
+import '../../../models/completed_todos/completed_todo_model.dart';
+import '../../../models/todos/todo_model.dart';
 import '../../../view_model/completed_todo_view_model.dart';
 import '../../../view_model/date_view_model.dart';
 import '../../../view_model/todo_view_model.dart';

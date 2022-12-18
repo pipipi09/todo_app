@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../../model/todos/todo_model.dart';
+import '../../../../../models/todos/todo_model.dart';
 import '../../../../../view_model/date_view_model.dart';
 import '../../../../../view_model/todo_view_model.dart';
 import '../atoms/submit_btn_atom.dart';

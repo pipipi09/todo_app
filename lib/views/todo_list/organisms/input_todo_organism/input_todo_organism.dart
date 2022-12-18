@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../model/todos/todo_model.dart';
+import '../../../../models/todos/todo_model.dart';
 import 'molecules/input_todo_molecule.dart';
 
 class InputTodoOrganism extends ConsumerWidget {

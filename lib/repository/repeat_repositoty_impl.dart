@@ -1,5 +1,5 @@
-import '../model/repeats/repeat_model.dart';
-import '../model/result/result.dart';
+import '../models/repeats/repeat_model.dart';
+import '../models/result/result.dart';
 import 'repository.dart';
 
 class RepeatRepository implements Repository<RepeatModel> {

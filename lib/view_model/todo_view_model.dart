@@ -1,8 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
-import '../model/result/result.dart';
-import '../model/todos/todo_model.dart';
+import '../models/result/result.dart';
+import '../models/todos/todo_model.dart';
 import '../repository/repository.dart';
 import '../repository/todo_repository_impl.dart';
 import 'date_view_model.dart';
