@@ -5,9 +5,9 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../model/completed_todos/completed_todo_model.dart';
-import '../model/repeats/repeat_model.dart';
-import '../model/todos/todo_model.dart';
+import '../models/completed_todos/completed_todo_model.dart';
+import '../models/repeats/repeat_model.dart';
+import '../models/todos/todo_model.dart';
 import '../utils/logger.dart';
 
 class DbController {
@@ -91,7 +91,7 @@ class DbController {
       logger.i('database updgrade to $newVersion from $oldVersion');
       batch.execute("DROP TABLE IF EXISTS completed_todos");
       batch.execute(
-        "CREATE TABLE completed_todos("
+        "CREATE TABLE $completedTodosTableName("
         "id TEXT PRIMARY KEY,"
         "date INTEGER NOT NULL,"
         "todo_id TEXT NOT NULL,"
@@ -102,7 +102,7 @@ class DbController {
       );
       batch.execute("DROP TABLE IF EXISTS repeats");
       batch.execute(
-        "CREATE TABLE repeats("
+        "CREATE TABLE $repeatsTableName("
         "id TEXT PRIMARY KEY,"
         "todo_id TEXT NOT NULL,"
         "frequency_id TEXT NOT NULL,"

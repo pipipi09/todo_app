@@ -1,10 +1,10 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
-import '../model/repeats/repeat_model.dart';
-import '../model/result/result.dart';
-import '../repository/repeat_repositoty_impl.dart';
-import '../repository/repository.dart';
+import '../models/repeats/repeat_model.dart';
+import '../models/result/result.dart';
+import '../repositories/repeat_repositoty_impl.dart';
+import '../repositories/repository.dart';
 
 final repeatViewModelProvider =
     StateNotifierProvider<RepeatViewModel, AsyncValue<List<RepeatModel>>>(

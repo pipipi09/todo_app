@@ -3,10 +3,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../view_model/calendar_completed_todo_view_model.dart';
-import '../../view_model/calendar_todo_view_model.dart';
-import '../../view_model/date_view_model.dart';
-import '../../view_model/todo_view_model.dart';
+import '../../view_models/calendar_completed_todo_view_model.dart';
+import '../../view_models/calendar_todo_view_model.dart';
+import '../../view_models/date_view_model.dart';
+import '../../view_models/todo_view_model.dart';
 
 class CalendarOrganism extends HookConsumerWidget {
   const CalendarOrganism({super.key});
@@ -45,7 +45,11 @@ class CalendarOrganism extends HookConsumerWidget {
       calendarStyle: CalendarStyle(
         todayDecoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.brown[50],
+          color: Colors.brown.shade100,
+        ),
+        selectedDecoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.brown.shade300,
         ),
       ),
       calendarBuilders: CalendarBuilders(
@@ -64,7 +68,7 @@ class CalendarOrganism extends HookConsumerWidget {
                     child: Center(
                       child: Icon(
                         Icons.local_florist,
-                        color: Colors.red[200],
+                        color: Colors.red.shade200,
                         size: 40,
                       ),
                     ),
@@ -83,7 +87,7 @@ class CalendarOrganism extends HookConsumerWidget {
                   height: 40,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.deepOrange[100],
+                    color: Colors.deepOrange.shade100,
                   ),
                 ),
               ),

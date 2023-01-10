@@ -1,8 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../db/db_controller.dart';
-import '../model/completed_todos/completed_todo_model.dart';
-import '../model/result/result.dart';
+import '../models/completed_todos/completed_todo_model.dart';
+import '../models/result/result.dart';
 import 'repository.dart';
 
 final completedTodoRepositoryProvider =

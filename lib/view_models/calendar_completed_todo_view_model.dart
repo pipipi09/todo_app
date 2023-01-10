@@ -3,10 +3,10 @@ import 'dart:collection';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../model/completed_todos/completed_todo_model.dart';
-import '../model/result/result.dart';
-import '../repository/completed_todo_repository_impl.dart';
-import '../repository/repository.dart';
+import '../models/completed_todos/completed_todo_model.dart';
+import '../models/result/result.dart';
+import '../repositories/completed_todo_repository_impl.dart';
+import '../repositories/repository.dart';
 
 /// CompletedTodoリストを日付ごとのMapにする
 ///

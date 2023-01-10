@@ -3,12 +3,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../const/frequencies.dart';
-import '../../../../../model/repeats/repeat_model.dart';
-import '../../../../../model/todos/todo_model.dart';
+import '../../../../../models/repeats/repeat_model.dart';
+import '../../../../../models/todos/todo_model.dart';
 import '../../../../../utils/logger.dart';
-import '../../../../../view_model/date_view_model.dart';
-import '../../../../../view_model/repeat_view_model.dart';
-import '../../../../../view_model/todo_view_model.dart';
+import '../../../../../view_models/date_view_model.dart';
+import '../../../../../view_models/repeat_view_model.dart';
+import '../../../../../view_models/todo_view_model.dart';
 import '../../../../molecules/cupertino_picker_molecule.dart';
 import '../atoms/submit_btn_atom.dart';
 import '../atoms/text_field_atom.dart';
