@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../const/frequencies.dart';
 import '../../../../../models/repeats/repeat_model.dart';
+import '../../../../../models/result/result.dart';
 import '../../../../../models/todos/todo_model.dart';
 import '../../../../../utils/logger.dart';
 import '../../../../../view_models/date_view_model.dart';
@@ -17,6 +18,24 @@ class InputTodoMolecule extends HookConsumerWidget {
   const InputTodoMolecule({required this.todo, super.key});
 
   final TodoModel todo;
+
+  Future<Result<String>> _saveTodo(WidgetRef ref, TodoModel todo) {
+    return ref.read(todoListViewModelProvider.notifier).save(todo);
+  }
+
+  Future<Result<int>> _saveRepeat(WidgetRef ref, RepeatModel repeat) {
+    return ref.read(repeatViewModelProvider.notifier).save(repeat);
+  }
+
+  void _closeModal(BuildContext context, WidgetRef ref) {
+    final mounted = ref
+        .read(
+          todoListViewModelProvider.notifier,
+        )
+        .mounted;
+
+    if (mounted) Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -99,38 +118,27 @@ class InputTodoMolecule extends HookConsumerWidget {
             editTodo.value =
                 editTodo.value.copyWith(text: textEditingController.text);
 
-            final todoResult = await ref
-                .read(
-                  todoListViewModelProvider.notifier,
-                )
-                .save(editTodo.value);
+            final todoResult = await _saveTodo(ref, editTodo.value);
 
-            todoResult.when(success: (todoId) {
-              if (repeatStatus.value != Frequency.noRepeat.typeName) {
-                final repeat = RepeatModel(
-                  todoId: todoId,
-                  frequencyId: repeatStatus.value,
-                );
-                ref.read(repeatViewModelProvider.notifier).save(repeat);
-              }
-              ref
-                  .read(displayDateViewModelProvider.notifier)
-                  .changeDate(editTodo.value.dateTime);
+            todoResult.when(
+              success: (todoId) {
+                if (repeatStatus.value != Frequency.noRepeat.typeName) {
+                  final repeat = RepeatModel(
+                    todoId: todoId,
+                    frequencyId: repeatStatus.value,
+                  );
+                  _saveRepeat(ref, repeat);
+                }
+                ref
+                    .read(displayDateViewModelProvider.notifier)
+                    .changeDate(editTodo.value.dateTime);
 
-              final mounted = ref
-                  .read(
-                    todoListViewModelProvider.notifier,
-                  )
-                  .mounted;
-
-              if (mounted) Navigator.pop(context);
-            }, failure: (e) {
-              logger.e(e);
-            });
-
-            if (todoResult.isSuccess) {
-              //
-            }
+                _closeModal(context, ref);
+              },
+              failure: (e) {
+                logger.e(e);
+              },
+            );
           },
         ),
       ],
