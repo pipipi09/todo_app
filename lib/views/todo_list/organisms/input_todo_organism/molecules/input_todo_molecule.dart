@@ -6,6 +6,7 @@ import '../../../../../const/frequencies.dart';
 import '../../../../../models/repeats/repeat_model.dart';
 import '../../../../../models/result/result.dart';
 import '../../../../../models/todos/todo_model.dart';
+import '../../../../../states/input_todo_state.dart';
 import '../../../../../utils/logger.dart';
 import '../../../../../view_models/date_view_model.dart';
 import '../../../../../view_models/repeat_view_model.dart';
@@ -19,14 +20,17 @@ class InputTodoMolecule extends HookConsumerWidget {
 
   final TodoModel todo;
 
+  /// 入力したTodoを保存する
   Future<Result<String>> _saveTodo(WidgetRef ref, TodoModel todo) {
     return ref.read(todoListViewModelProvider.notifier).save(todo);
   }
 
+  /// 繰り返し情報を保存する
   Future<Result<int>> _saveRepeat(WidgetRef ref, RepeatModel repeat) {
     return ref.read(repeatViewModelProvider.notifier).save(repeat);
   }
 
+  /// モーダルを閉じる
   void _closeModal(BuildContext context, WidgetRef ref) {
     final mounted = ref
         .read(
@@ -39,16 +43,15 @@ class InputTodoMolecule extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var editTodo = useState(todo.copyWith());
     var repeatStatus = useState(frequencies[0]);
-    final textEditingController =
-        TextEditingController(text: editTodo.value.text);
+    final inputTodoNotifier = ref.watch(inputTodoStateProvider(todo).notifier);
+    final inputTodo = ref.watch(inputTodoStateProvider(todo));
 
     return Column(
       children: [
         TextFieldAtom(
           label: 'Todo',
-          controller: textEditingController,
+          controller: inputTodoNotifier.textEditingController,
         ),
         const SizedBox(height: 20),
         Row(
@@ -57,20 +60,20 @@ class InputTodoMolecule extends HookConsumerWidget {
             const Text('Date'),
             Row(
               children: [
-                Text(editTodo.value.formatDate),
+                Text(inputTodo.formatDate),
                 IconButton(
                   onPressed: () async {
                     final DateTime? pickedDate = await showDatePicker(
                       context: context,
-                      initialDate: editTodo.value.dateTime,
+                      initialDate: inputTodo.dateTime,
                       firstDate: DateTime(2022),
                       lastDate: DateTime(2030),
                     );
 
                     if (pickedDate != null) {
-                      editTodo.value = editTodo.value.copyWith(
-                        date: pickedDate.millisecondsSinceEpoch,
-                      );
+                      ref
+                          .read(inputTodoStateProvider(todo).notifier)
+                          .updateDate(pickedDate.millisecondsSinceEpoch);
                     }
                   },
                   icon: const Icon(
@@ -115,10 +118,7 @@ class InputTodoMolecule extends HookConsumerWidget {
         SubmitBtnAtom(
           label: 'Save',
           onPressed: () async {
-            editTodo.value =
-                editTodo.value.copyWith(text: textEditingController.text);
-
-            final todoResult = await _saveTodo(ref, editTodo.value);
+            final todoResult = await _saveTodo(ref, inputTodo);
 
             todoResult.when(
               success: (todoId) {
@@ -131,7 +131,7 @@ class InputTodoMolecule extends HookConsumerWidget {
                 }
                 ref
                     .read(displayDateViewModelProvider.notifier)
-                    .changeDate(editTodo.value.dateTime);
+                    .changeDate(inputTodo.dateTime);
 
                 _closeModal(context, ref);
               },
