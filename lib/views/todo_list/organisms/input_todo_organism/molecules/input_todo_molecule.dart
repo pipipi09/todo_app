@@ -31,7 +31,7 @@ class InputTodoMolecule extends HookConsumerWidget {
   }
 
   /// モーダルを閉じる
-  void _closeModal(BuildContext context, WidgetRef ref) {
+  _closeModal(BuildContext context, WidgetRef ref) {
     final mounted = ref
         .read(
           todoListViewModelProvider.notifier,
@@ -39,6 +39,22 @@ class InputTodoMolecule extends HookConsumerWidget {
         .mounted;
 
     if (mounted) Navigator.pop(context);
+  }
+
+  /// カレンダーボタン押下
+  _onPressedCalendarIcon(BuildContext context, WidgetRef ref) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: ref.read(inputTodoStateProvider(todo)).dateTime,
+      firstDate: DateTime(2022),
+      lastDate: DateTime(2050),
+    );
+
+    if (pickedDate != null) {
+      ref
+          .read(inputTodoStateProvider(todo).notifier)
+          .updateDate(pickedDate.millisecondsSinceEpoch);
+    }
   }
 
   @override
@@ -62,20 +78,7 @@ class InputTodoMolecule extends HookConsumerWidget {
               children: [
                 Text(inputTodo.formatDate),
                 IconButton(
-                  onPressed: () async {
-                    final DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: inputTodo.dateTime,
-                      firstDate: DateTime(2022),
-                      lastDate: DateTime(2030),
-                    );
-
-                    if (pickedDate != null) {
-                      ref
-                          .read(inputTodoStateProvider(todo).notifier)
-                          .updateDate(pickedDate.millisecondsSinceEpoch);
-                    }
-                  },
+                  onPressed: _onPressedCalendarIcon(context, ref),
                   icon: const Icon(
                     Icons.calendar_month_rounded,
                   ),
@@ -92,20 +95,7 @@ class InputTodoMolecule extends HookConsumerWidget {
               children: [
                 Text(repeatStatus.value),
                 IconButton(
-                  onPressed: () async {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return CupertinoPickerMolecule(
-                          items:
-                              Frequency.values.map((e) => e.typeName).toList(),
-                          onSelectedItemChanged: (int index) {
-                            repeatStatus.value = frequencies[index];
-                          },
-                        );
-                      },
-                    );
-                  },
+                  onPressed: () async {},
                   icon: const Icon(
                     Icons.repeat_rounded,
                   ),
